@@ -5,6 +5,7 @@ import projectReducer from './slices/projectSlice'
 import questionnaireReducer from './slices/questionnaireSlice'
 import techstackReducer from './slices/techstackSliceUpdated'
 import assessmentResultsReducer from './slices/assessmentResultsSlice'
+import dashboardReducer from './slices/dashboardSlice'
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     questionnaire: questionnaireReducer,
     techstack: techstackReducer,
     assessmentResults: assessmentResultsReducer,
+    dashboard: dashboardReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
