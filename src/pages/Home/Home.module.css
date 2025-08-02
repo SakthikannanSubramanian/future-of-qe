@@ -1,0 +1,223 @@
+.home {
+  min-height: calc(100vh - 60px);
+  background-color: #f8fafc;
+  padding: 2rem 0;
+}
+
+.dark.home {
+  background-color: #1a1a1a;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 120px);
+}
+
+/* Header displayed in the center of the page */
+.landingHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.mainTitle {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: bold;
+  color: #2d3748;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.dark .mainTitle {
+  color: #e0e0e0;
+}
+
+/* Description displayed below the header */
+.description {
+  text-align: center;
+  margin-bottom: 4rem;
+  max-width: 800px;
+  width: 100%;
+}
+
+.descriptionText {
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+  color: #4a5568;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.dark .descriptionText {
+  color: #a0a0a0;
+}
+
+/* 3 Navigation Icons */
+.navigation {
+  width: 100%;
+}
+
+.navigationGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.navigationCard {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 250px;
+}
+
+.dark .navigationCard {
+  background-color: #2d2d2d;
+}
+
+.navigationCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  border-color: #8B5CF6;
+}
+
+.navigationCard:focus {
+  outline: none;
+  border-color: #8B5CF6;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.navigationIcon {
+  margin-bottom: 1.5rem;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.iconSymbol {
+  font-size: 2.5rem;
+  filter: grayscale(0);
+}
+
+.navigationLabel {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 1rem 0;
+}
+
+.dark .navigationLabel {
+  color: #e0e0e0;
+}
+
+.navigationDescription {
+  font-size: 0.95rem;
+  color: #718096;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.dark .navigationDescription {
+  color: #a0a0a0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .navigationGrid {
+    gap: 1.5rem;
+  }
+  
+  .navigationCard {
+    padding: 2rem 1rem;
+    min-height: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .home {
+    padding: 1rem 0;
+  }
+
+  .container {
+    min-height: calc(100vh - 80px);
+  }
+
+  .description {
+    margin-bottom: 3rem;
+  }
+
+  .navigationGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    max-width: 400px;
+  }
+
+  .navigationCard {
+    padding: 2rem;
+    min-height: 200px;
+  }
+
+  .navigationIcon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .iconSymbol {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 0.5rem;
+  }
+
+  .description {
+    margin-bottom: 2rem;
+  }
+
+  .navigationCard {
+    padding: 1.5rem;
+    min-height: 180px;
+  }
+
+  .navigationIcon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .iconSymbol {
+    font-size: 1.5rem;
+  }
+
+  .navigationLabel {
+    font-size: 1.1rem;
+  }
+
+  .navigationDescription {
+    font-size: 0.9rem;
+  }
+}

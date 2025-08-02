@@ -1,0 +1,23 @@
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.App main {
+  flex: 1;
+  padding: 0;
+}
+
+/* Global responsive breakpoints */
+@media (max-width: 768px) {
+  .App main {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .App main {
+    padding: 0.5rem;
+  }
+}
