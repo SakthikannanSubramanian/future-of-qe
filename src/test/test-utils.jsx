@@ -5,7 +5,6 @@ import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 
 // Import your reducers
-import counterReducer from '../redux/slices/counterSlice'
 import userReducer from '../redux/slices/userSlice'
 import uiReducer from '../redux/slices/uiSlice'
 import projectReducer from '../redux/slices/projectSlice'
@@ -17,7 +16,6 @@ function render(
     // Automatically create a store instance if no store was passed in
     store = configureStore({
       reducer: {
-        counter: counterReducer,
         user: userReducer,
         ui: uiReducer,
         project: projectReducer,

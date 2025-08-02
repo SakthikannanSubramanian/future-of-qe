@@ -9,7 +9,6 @@ import About from './pages/About/About'
 import Contact from './pages/Contact/Contact'
 import Dashboard from './pages/Dashboard/Dashboard'
 import Login from './pages/Login/Login'
-import Questionnaire from './pages/Questionnaire/Questionnaire'
 import Questions from './pages/Questions/Questions'
 import TechStackNew from './pages/TechStack/TechStackNew'
 import NotFound from './pages/NotFound/NotFound'
@@ -29,7 +28,6 @@ function App() {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/questionnaire" element={<Questionnaire />} />
                 <Route path="/questions" element={<Questions />} />
                 <Route path="/tech-stack" element={<TechStackNew />} />
                 <Route path="*" element={<NotFound />} />
