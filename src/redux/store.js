@@ -4,6 +4,7 @@ import uiReducer from './slices/uiSlice'
 import projectReducer from './slices/projectSlice'
 import questionnaireReducer from './slices/questionnaireSlice'
 import techstackReducer from './slices/techstackSliceUpdated'
+import assessmentResultsReducer from './slices/assessmentResultsSlice'
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     project: projectReducer,
     questionnaire: questionnaireReducer,
     techstack: techstackReducer,
+    assessmentResults: assessmentResultsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

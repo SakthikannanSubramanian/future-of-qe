@@ -230,7 +230,7 @@ const Questions = () => {
       console.log('Formatted responses being sent to Redux:', JSON.stringify(formattedResponses, null, 2))
       
       dispatch(submitQuestionnaireResponses(formattedResponses))
-      navigate('/dashboard') // Redirect to results/dashboard page
+      navigate('/assessment-success') // Redirect to assessment success page
     } else {
       // Update allResponses state with current category answers before navigating
       setAllResponses(updatedAllResponses)
@@ -395,7 +395,8 @@ const Questions = () => {
       // Submit the questionnaire responses
       await dispatch(submitQuestionnaireResponses(formattedResponses)).unwrap();
       
-      // Navigation will happen automatically via the useEffect above
+      // Navigate to the assessment success page
+      navigate('/assessment-success');
     } catch (error) {
       console.error('Failed to submit:', error);
     }

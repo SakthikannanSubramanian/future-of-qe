@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard/Dashboard'
 import Login from './pages/Login/Login'
 import Questions from './pages/Questions/Questions'
 import TechStackNew from './pages/TechStack/TechStackNew'
+import AssessmentSuccess from './pages/AssessmentSuccess/AssessmentSuccess'
 import NotFound from './pages/NotFound/NotFound'
 import './App.module.css'
 
@@ -30,6 +31,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/questions" element={<Questions />} />
                 <Route path="/tech-stack" element={<TechStackNew />} />
+                <Route path="/assessment-success" element={<AssessmentSuccess />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
