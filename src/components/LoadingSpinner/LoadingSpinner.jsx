@@ -4,14 +4,14 @@ import styles from './LoadingSpinner.module.css'
 
 const LoadingSpinner = ({ size = 'medium', message = 'Loading...', className = '' }) => {
   return (
-    <div className={`${styles.container} ${className}`}>
-      <div className={`${styles.spinner} ${styles[size]}`}>
-        <div className={styles.circle}></div>
-        <div className={styles.circle}></div>
-        <div className={styles.circle}></div>
-        <div className={styles.circle}></div>
+    <div className={`${styles.container} ${className}`} data-testid="loading-spinner-container">
+      <div className={`${styles.spinner} ${styles[size]}`} data-testid="loading-spinner">
+        <div className={styles.circle} data-testid="loading-spinner-circle-1"></div>
+        <div className={styles.circle} data-testid="loading-spinner-circle-2"></div>
+        <div className={styles.circle} data-testid="loading-spinner-circle-3"></div>
+        <div className={styles.circle} data-testid="loading-spinner-circle-4"></div>
       </div>
-      {message && <p className={styles.message}>{message}</p>}
+      {message && <p className={styles.message} data-testid="loading-spinner-message">{message}</p>}
     </div>
   )
 }

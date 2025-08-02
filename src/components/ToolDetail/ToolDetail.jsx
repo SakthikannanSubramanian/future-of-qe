@@ -228,87 +228,90 @@ const ToolDetail = ({
     }
   }
 
-  return (
-    <div className={`bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden ${className}`} {...props}>
-      {/* Header */}
-      <div className="bg-gradient-to-r from-primary-500 to-primary-600 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            {tool.icon && (
-              <div className="text-3xl">{tool.icon}</div>
-            )}
-            <div>
-              <h2 className="text-2xl font-bold text-white">{tool.label}</h2>
-              <div className="flex items-center space-x-2 mt-1">
-                {tool.popular && (
-                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
-                    🔥 Popular
-                  </span>
-                )}
-                {tool.platforms && (
-                  <span className="text-primary-100 text-sm">
-                    {tool.platforms.join(', ')}
-                  </span>
-                )}
-              </div>
+return (
+  <div className={`bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden ${className}`} data-testid="tool-detail-container" {...props}>
+    {/* Header */}
+    <div className="bg-gradient-to-r from-primary-500 to-primary-600 px-6 py-4" data-testid="tool-detail-header">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          {tool.icon && (
+            <div className="text-3xl" data-testid="tool-detail-icon">{tool.icon}</div>
+          )}
+          <div>
+            <h2 className="text-2xl font-bold text-white" data-testid="tool-detail-title">{tool.label}</h2>
+            <div className="flex items-center space-x-2 mt-1">
+              {tool.popular && (
+                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800" data-testid="tool-detail-popular-badge">
+                  🔥 Popular
+                </span>
+              )}
+              {tool.platforms && (
+                <span className="text-primary-100 text-sm" data-testid="tool-detail-platforms">
+                  {tool.platforms.join(', ')}
+                </span>
+              )}
             </div>
           </div>
+        </div>
+        
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={() => onCompareToggle?.(tool)}
+            className={`
+              px-4 py-2 rounded-lg font-medium transition-all duration-200
+              ${isComparing 
+                ? 'bg-white text-primary-600 hover:bg-gray-100' 
+                : 'bg-primary-400 text-white hover:bg-primary-300'
+              }
+            `}
+            data-testid="tool-detail-compare-button"
+          >
+            {isComparing ? '✓ Comparing' : '+ Compare'}
+          </button>
           
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={() => onCompareToggle?.(tool)}
-              className={`
-                px-4 py-2 rounded-lg font-medium transition-all duration-200
-                ${isComparing 
-                  ? 'bg-white text-primary-600 hover:bg-gray-100' 
-                  : 'bg-primary-400 text-white hover:bg-primary-300'
-                }
-              `}
-            >
-              {isComparing ? '✓ Comparing' : '+ Compare'}
-            </button>
-            
-            <button
-              onClick={onClose}
-              className="p-2 text-white hover:bg-primary-400 rounded-lg transition-colors"
-              aria-label="Close details"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
+          <button
+            onClick={onClose}
+            className="p-2 text-white hover:bg-primary-400 rounded-lg transition-colors"
+            aria-label="Close details"
+            data-testid="tool-detail-close-button"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
       </div>
-
-      {/* Tab navigation */}
-      <div className="border-b border-gray-200">
-        <nav className="flex space-x-8 px-6">
-          {tabs.map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`
-                py-4 px-1 border-b-2 font-medium text-sm transition-colors
-                ${activeTab === tab.id
-                  ? 'border-primary-500 text-primary-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }
-              `}
-            >
-              <span className="mr-2">{tab.icon}</span>
-              {tab.label}
-            </button>
-          ))}
-        </nav>
-      </div>
-
-      {/* Tab content */}
-      <div className="p-6 overflow-y-auto max-h-[60vh]">
-        {renderTabContent()}
-      </div>
     </div>
-  )
+
+    {/* Tab navigation */}
+    <div className="border-b border-gray-200" data-testid="tool-detail-tabs">
+      <nav className="flex space-x-8 px-6">
+        {tabs.map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`
+              py-4 px-1 border-b-2 font-medium text-sm transition-colors
+              ${activeTab === tab.id
+                ? 'border-primary-500 text-primary-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }
+            `}
+            data-testid={`tool-detail-tab-${tab.id}`}
+          >
+            <span className="mr-2">{tab.icon}</span>
+            {tab.label}
+          </button>
+        ))}
+      </nav>
+    </div>
+
+    {/* Tab content */}
+    <div className="p-6 overflow-y-auto max-h-[60vh]" data-testid="tool-detail-tab-content">
+      {renderTabContent()}
+    </div>
+  </div>
+)
 }
 
 ToolDetail.propTypes = {

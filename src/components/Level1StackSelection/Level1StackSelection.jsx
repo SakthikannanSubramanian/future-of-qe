@@ -108,11 +108,12 @@ const Level1StackSelection = ({
   }
 
   return (
-    <div className={`py-12 ${className}`} {...props}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className={`py-12 ${className}`} data-testid="level1-stack-selection-root" {...props}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-testid="level1-stack-selection-container">
         {/* Header */}
         <motion.div 
           className="text-center mb-16"
+          data-testid="level1-stack-selection-header"
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -143,6 +144,7 @@ const Level1StackSelection = ({
         {/* Stack Cards Grid */}
         <motion.div 
           className={`${getGridClass(stacks.length)} gap-8 mb-16`}
+          data-testid="level1-stack-selection-grid"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -153,6 +155,7 @@ const Level1StackSelection = ({
               variants={cardVariants}
               whileHover="hover"
               whileTap="tap"
+              data-testid={`level1-stack-selection-card-${stack.id}`}
               className={`
                 ${getCardClass(stacks.length)}
                 group relative cursor-pointer rounded-3xl overflow-hidden backdrop-blur-sm
@@ -189,7 +192,9 @@ const Level1StackSelection = ({
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
               {/* Content */}
-              <div className={`relative p-8 flex flex-col items-center justify-center text-center ${stacks.length === 1 ? 'h-[28rem]' : stacks.length <= 3 ? 'h-96' : 'h-96'}`}>
+              <div className={`relative p-8 flex flex-col items-center justify-center text-center ${stacks.length === 1 ? 'h-[28rem]' : stacks.length <= 3 ? 'h-96' : 'h-96'}`}
+                data-testid={`level1-stack-selection-card-content-${stack.id}`}
+              >
                 {/* Floating Icon */}
                 <motion.div 
                   className={`${stacks.length === 1 ? 'text-8xl' : 'text-7xl'} mb-6 filter drop-shadow-lg`}
@@ -209,7 +214,9 @@ const Level1StackSelection = ({
                 </motion.div>
 
                 {/* Title with gradient */}
-                <h2 className={`${stacks.length === 1 ? 'text-3xl md:text-4xl' : 'text-2xl md:text-3xl'} font-bold mb-4 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent`}>
+                <h2 className={`${stacks.length === 1 ? 'text-3xl md:text-4xl' : 'text-2xl md:text-3xl'} font-bold mb-4 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent`}
+                  data-testid={`level1-stack-selection-card-title-${stack.id}`}
+                >
                   {stack.label}
                 </h2>
 
@@ -218,6 +225,7 @@ const Level1StackSelection = ({
                   <motion.div 
                     className="mb-4"
                     whileHover={{ scale: 1.05 }}
+                    data-testid={`level1-stack-selection-card-type-${stack.id}`}
                   >
                     <span 
                       className={`inline-flex items-center px-4 py-2 rounded-full ${stacks.length === 1 ? 'text-base' : 'text-sm'} font-semibold text-white shadow-lg`}
@@ -238,6 +246,7 @@ const Level1StackSelection = ({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.3 }}
+                    data-testid={`level1-stack-selection-card-description-${stack.id}`}
                   >
                     {stack.description}
                   </motion.p>
@@ -250,6 +259,7 @@ const Level1StackSelection = ({
                     initial={{ scale: 0, rotate: -180 }}
                     animate={{ scale: 1, rotate: 0 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    data-testid={`level1-stack-selection-card-selected-indicator-${stack.id}`}
                   >
                     <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center shadow-lg">
                       <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -296,11 +306,13 @@ const Level1StackSelection = ({
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.6 }}
+            data-testid="level1-stack-selection-cta-section"
           >
             <motion.div 
               className="inline-flex items-center space-x-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-8 py-4 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.98 }}
+              data-testid="level1-stack-selection-cta"
               onClick={() => {
                 const nextSection = document.getElementById('level-2-categories')
                 if (nextSection) {
@@ -311,10 +323,10 @@ const Level1StackSelection = ({
               <div className="flex items-center space-x-3">
                 <span className="text-3xl">{getStackIcon(selectedStack)}</span>
                 <div className="text-left">
-                  <div className="font-semibold text-lg">
+                  <div className="font-semibold text-lg" data-testid="level1-stack-selection-cta-title">
                     Explore {selectedStack.label} Testing
                   </div>
-                  <div className="text-indigo-100 text-sm">
+                  <div className="text-indigo-100 text-sm" data-testid="level1-stack-selection-cta-meta">
                     {selectedStack.categoryCount} categories • {selectedStack.toolCount} tools available
                   </div>
                 </div>

@@ -29,12 +29,13 @@ const BackButton = ({
         ${className}
       `}
       aria-label={label}
+      data-testid="back-button-root"
       {...props}
     >
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-testid="back-button-icon">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
       </svg>
-      <span>{label}</span>
+      <span data-testid="back-button-label">{label}</span>
     </button>
   )
 }

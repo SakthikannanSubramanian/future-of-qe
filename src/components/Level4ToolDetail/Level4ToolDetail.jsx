@@ -431,177 +431,177 @@ const Level4ToolDetail = ({
     }
   }
 
-  return (
-    <motion.div
-      id="level-4-detail"
-      className={`min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-violet-50 ${className}`}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-      data-testid="level-4-tool-detail"
-      {...props}
-    >
-      {/* Modern Header with Glass Morphism */}
-      <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-purple-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            {/* Title Section */}
+return (
+  <motion.div
+    id="level-4-detail"
+    className={`min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-violet-50 ${className}`}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.6 }}
+    data-testid="level-4-tool-detail"
+    {...props}
+  >
+    {/* Modern Header with Glass Morphism */}
+    <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-purple-100 shadow-sm" data-testid="level-4-header">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          {/* Title Section */}
+          <div className="flex items-center space-x-4">
+            <BackButton 
+              onClick={onBack} 
+              className="flex-shrink-0 bg-white/90 backdrop-blur-sm border border-gray-200/60 rounded-xl text-gray-700 hover:text-purple-700 hover:bg-white hover:border-purple-200/60 font-medium shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+              data-testid="level-4-back-button"
+            />
             <div className="flex items-center space-x-4">
-              <BackButton 
-                onClick={onBack} 
-                className="flex-shrink-0 bg-white/90 backdrop-blur-sm border border-gray-200/60 rounded-xl text-gray-700 hover:text-purple-700 hover:bg-white hover:border-purple-200/60 font-medium shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
-                data-testid="level-4-back-button"
-              />
-              <div className="flex items-center space-x-4">
-                  <motion.div 
-                    className="w-16 h-16 bg-gradient-to-br from-purple-400 to-violet-500 rounded-2xl flex items-center justify-center text-2xl shadow-lg"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                  {toolIcon}
-                </motion.div>
-                <div>
-                  <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-700 to-violet-700 bg-clip-text text-transparent" data-testid="level-4-tool-title">
-                    {tool.Label || tool.Tool || 'Tool Detail'}
-                  </h1>
-                  <p className="text-gray-600 text-sm sm:text-base font-medium">
-                    {selectedCategory?.label || selectedCategory?.name || selectedCategory || 'Category'}
-                  </p>
-                </div>
+                <motion.div 
+                  className="w-16 h-16 bg-gradient-to-br from-purple-400 to-violet-500 rounded-2xl flex items-center justify-center text-2xl shadow-lg"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  data-testid="level-4-tool-icon"
+                >
+                {toolIcon}
+              </motion.div>
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-700 to-violet-700 bg-clip-text text-transparent" data-testid="level-4-tool-title">
+                  {tool.Label || tool.Tool || 'Tool Detail'}
+                </h1>
+                <p className="text-gray-600 text-sm sm:text-base font-medium" data-testid="level-4-tool-category">
+                  {selectedCategory?.label || selectedCategory?.name || selectedCategory || 'Category'}
+                </p>
               </div>
             </div>
-            
-            {/* Action Buttons */}
-            <div className="flex items-center space-x-3 flex-shrink-0">
-              {onToggleCompare && (
+          </div>
+          
+          {/* Action Buttons */}
+          <div className="flex items-center space-x-3 flex-shrink-0">
+            {onToggleCompare && (
+              <motion.button
+                onClick={() => onToggleCompare(tool)}
+                className={`px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 ${
+                  isComparing
+                    ? 'bg-gradient-to-r from-purple-500 to-violet-600 text-white shadow-lg hover:shadow-xl'
+                    : 'bg-white/90 text-gray-700 border border-purple-200 hover:bg-purple-50 hover:border-purple-300'
+                }`}
+                data-testid="level-4-compare-toggle"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {isComparing ? '✓ Added' : '+ Compare'}
+              </motion.button>
+            )}
+            <motion.button
+              onClick={() => onBookmark?.(tool)}
+              className="p-3 bg-white/90 text-gray-700 border border-purple-200 rounded-xl hover:bg-purple-50 hover:border-purple-300 hover:text-purple-600 transition-all duration-300"
+              data-testid="level-4-bookmark-button"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              📌
+            </motion.button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Main Content Container */}
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" data-testid="level-4-main-content">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        {/* Sidebar - Actions */}
+        <div className="lg:col-span-1 space-y-6" data-testid="level-4-sidebar">
+          {/* Quick Install Card */}
+          {tool['Install Command'] && (
+            <motion.div 
+            className="bg-gradient-to-br from-purple-100 to-violet-100 rounded-3xl overflow-hidden shadow-xl border border-purple-100"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            data-testid="level-4-install-section"
+          >
+            <div className="px-6 py-4 bg-gradient-to-r from-purple-200 to-violet-200">
+              <h3 className="text-lg font-semibold text-purple-900 flex items-center">
+                <span className="text-2xl mr-3">⚡</span>
+                Quick Install
+              </h3>
+            </div>
+            <div className="p-6">
+              <div className="flex items-center justify-between bg-white/80 rounded-xl p-4 border border-purple-100">
+                <code className="text-purple-700 font-mono text-sm flex-1 break-all" data-testid="level-4-install-command">
+                  {tool['Install Command']}
+                </code>
                 <motion.button
-                  onClick={() => onToggleCompare(tool)}
-                  className={`px-6 py-3 rounded-xl font-medium text-sm transition-all duration-300 ${
-                    isComparing
-                      ? 'bg-gradient-to-r from-purple-500 to-violet-600 text-white shadow-lg hover:shadow-xl'
-                      : 'bg-white/90 text-gray-700 border border-purple-200 hover:bg-purple-50 hover:border-purple-300'
+                  onClick={() => copyToClipboard(tool['Install Command'], 'install')}
+                  className="ml-3 p-2 text-purple-400 hover:text-purple-700 hover:bg-purple-100 transition-colors duration-200 rounded-lg"
+                  title="Copy to clipboard"
+                  data-testid="level-4-copy-install-button"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  {copiedField === 'install' ? (
+                    <motion.span
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="text-green-400 text-lg"
+                    >
+                      ✓
+                    </motion.span>
+                  ) : (
+                    <span className="text-lg">📋</span>
+                  )}
+                </motion.button>
+              </div>
+            </div>
+          </motion.div>
+          )}
+        </div>
+
+        {/* Main Content Area */}
+        <div className="lg:col-span-3" data-testid="level-4-content-area">
+          {/* Modern Tab Navigation */}
+          <motion.div 
+            className="bg-gradient-to-br from-purple-50 to-violet-100 backdrop-blur-sm rounded-2xl p-2 shadow-lg border border-purple-100 mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            data-testid="level-4-tab-navigation"
+          >
+            <div className="flex flex-wrap gap-2">
+              {tabs.map((tab) => (
+                <motion.button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center px-4 py-3 rounded-xl font-medium text-sm transition-all duration-300 ${
+                    activeTab === tab.id
+                      ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg'
+                      : 'text-gray-700 hover:bg-white/60 hover:text-purple-600'
                   }`}
-                  data-testid="level-4-compare-toggle"
+                  data-testid={`level-4-tab-${tab.id}`}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  {isComparing ? '✓ Added' : '+ Compare'}
+                  <span className="mr-2 text-lg">{tab.icon}</span>
+                  <span className="hidden sm:inline">{tab.label}</span>
                 </motion.button>
-              )}
-              <motion.button
-                onClick={() => onBookmark?.(tool)}
-                className="p-3 bg-white/90 text-gray-700 border border-purple-200 rounded-xl hover:bg-purple-50 hover:border-purple-300 hover:text-purple-600 transition-all duration-300"
-                data-testid="level-4-bookmark-button"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                📌
-              </motion.button>
+              ))}
             </div>
-          </div>
-        </div>
-      </div>
+          </motion.div>
 
-      {/* Main Content Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          
-          {/* Sidebar - Actions */}
-          <div className="lg:col-span-1 space-y-6">
-
-            {/* Quick Install Card */}
-            {tool['Install Command'] && (
-              <motion.div 
-              className="bg-gradient-to-br from-purple-100 to-violet-100 rounded-3xl overflow-hidden shadow-xl border border-purple-100"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              data-testid="level-4-install-section"
-            >
-              <div className="px-6 py-4 bg-gradient-to-r from-purple-200 to-violet-200">
-                <h3 className="text-lg font-semibold text-purple-900 flex items-center">
-                  <span className="text-2xl mr-3">⚡</span>
-                  Quick Install
-                </h3>
-              </div>
-              <div className="p-6">
-                <div className="flex items-center justify-between bg-white/80 rounded-xl p-4 border border-purple-100">
-                  <code className="text-purple-700 font-mono text-sm flex-1 break-all" data-testid="level-4-install-command">
-                    {tool['Install Command']}
-                  </code>
-                  <motion.button
-                    onClick={() => copyToClipboard(tool['Install Command'], 'install')}
-                    className="ml-3 p-2 text-purple-400 hover:text-purple-700 hover:bg-purple-100 transition-colors duration-200 rounded-lg"
-                    title="Copy to clipboard"
-                    data-testid="level-4-copy-install-button"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    {copiedField === 'install' ? (
-                      <motion.span
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="text-green-400 text-lg"
-                      >
-                        ✓
-                      </motion.span>
-                    ) : (
-                      <span className="text-lg">📋</span>
-                    )}
-                  </motion.button>
-                </div>
-              </div>
-            </motion.div>
-            )}
-          </div>
-
-          {/* Main Content Area */}
-          <div className="lg:col-span-3">
-            {/* Modern Tab Navigation */}
-            <motion.div 
-              className="bg-gradient-to-br from-purple-50 to-violet-100 backdrop-blur-sm rounded-2xl p-2 shadow-lg border border-purple-100 mb-8"
+          {/* Tab Content */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              data-testid="level-4-tab-navigation"
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              data-testid="level-4-tab-content"
             >
-              <div className="flex flex-wrap gap-2">
-                {tabs.map((tab) => (
-                  <motion.button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center px-4 py-3 rounded-xl font-medium text-sm transition-all duration-300 ${
-                      activeTab === tab.id
-                        ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg'
-                        : 'text-gray-700 hover:bg-white/60 hover:text-purple-600'
-                    }`}
-                    data-testid={`level-4-tab-${tab.id}`}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <span className="mr-2 text-lg">{tab.icon}</span>
-                    <span className="hidden sm:inline">{tab.label}</span>
-                  </motion.button>
-                ))}
-              </div>
+              {renderTabContent()}
             </motion.div>
-
-            {/* Tab Content */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                {renderTabContent()}
-              </motion.div>
-            </AnimatePresence>
-          </div>
+          </AnimatePresence>
         </div>
       </div>
-    </motion.div>
+    </div>
+  </motion.div>
   )
 }
 

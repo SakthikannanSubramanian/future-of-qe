@@ -30,6 +30,7 @@ const CategoryCard = ({
         }
         ${className}
       `}
+      data-testid={`category-card-${category.label}`}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       tabIndex={0}
@@ -39,16 +40,16 @@ const CategoryCard = ({
       {...props}
     >
       {/* Card content */}
-      <div className="p-6 h-full flex flex-col items-center justify-center text-center">
+      <div className="p-6 h-full flex flex-col items-center justify-center text-center" data-testid="category-card-content">
         {/* Icon */}
         {category.icon && (
-          <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+          <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300" data-testid="category-card-icon">
             {category.icon}
           </div>
         )}
         
         {/* Title */}
-        <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
+        <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors" data-testid="category-card-title">
           {category.label}
         </h3>
         
@@ -56,6 +57,7 @@ const CategoryCard = ({
         {category.type && (
           <span 
             className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium"
+            data-testid="category-card-type-badge"
             style={{ 
               backgroundColor: category.color ? `${category.color}20` : '#f3f4f6',
               color: category.color || '#6b7280'

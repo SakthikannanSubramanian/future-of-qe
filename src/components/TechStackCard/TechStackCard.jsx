@@ -99,6 +99,7 @@ const TechStackCard = ({ stack, onClick, className = '', isActive = false }) => 
       style={{
         '--stack-color': stackColor
       }}
+      data-testid={`tech-stack-card-${stack.id}`}
     >
       {/* Dynamic Gradient Background */}
       <div 
@@ -112,7 +113,7 @@ const TechStackCard = ({ stack, onClick, className = '', isActive = false }) => 
       <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
       {/* Content Container */}
-      <div className="relative h-full p-8 flex flex-col items-center justify-center text-center">
+      <div className="relative h-full p-8 flex flex-col items-center justify-center text-center" data-testid="tech-stack-card-content">
         {/* Floating Icon Container */}
         <motion.div 
           className="mb-6 w-20 h-20 rounded-2xl flex items-center justify-center shadow-xl group-hover:shadow-2xl transition-all duration-500"
@@ -128,11 +129,13 @@ const TechStackCard = ({ stack, onClick, className = '', isActive = false }) => 
             duration: 0.6,
             ease: "easeInOut"
           }}
+          data-testid="tech-stack-card-icon-container"
         >
           <motion.span 
             className="text-4xl filter drop-shadow-lg"
             whileHover={{ scale: 1.2 }}
             transition={{ duration: 0.3 }}
+            data-testid="tech-stack-card-icon"
           >
             {getStackIcon(stack.id)}
           </motion.span>
@@ -145,6 +148,7 @@ const TechStackCard = ({ stack, onClick, className = '', isActive = false }) => 
           }`}
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.2 }}
+          data-testid="tech-stack-card-title"
         >
           {stack.label}
         </motion.h3>
@@ -156,6 +160,7 @@ const TechStackCard = ({ stack, onClick, className = '', isActive = false }) => 
             initial={{ scale: 0, rotate: -180 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
+            data-testid="tech-stack-card-active-indicator"
           >
             <motion.span 
               className="text-white text-sm"

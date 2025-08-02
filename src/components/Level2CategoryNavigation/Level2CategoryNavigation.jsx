@@ -67,13 +67,14 @@ const Level2CategoryNavigation = ({
 
   if (!selectedStack) {
     return (
-      <div id="level-2-categories" className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">No Stack Selected</h2>
-          <p className="text-gray-600 mb-4">Please select a technology stack first.</p>
+      <div id="level-2-categories" className="min-h-screen bg-gray-50 flex items-center justify-center" data-testid="level2-no-stack-root">
+        <div className="text-center" data-testid="level2-no-stack-container">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2" data-testid="level2-no-stack-title">No Stack Selected</h2>
+          <p className="text-gray-600 mb-4" data-testid="level2-no-stack-desc">Please select a technology stack first.</p>
           <button
             onClick={onBack}
             className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
+            data-testid="level2-no-stack-back"
           >
             Back to Stacks
           </button>
@@ -84,13 +85,14 @@ const Level2CategoryNavigation = ({
 
   if (!Array.isArray(categories) || categories.length === 0) {
     return (
-      <div id="level-2-categories" className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">No Categories Found</h2>
-          <p className="text-gray-600 mb-4">The selected stack has no categories.</p>
+      <div id="level-2-categories" className="min-h-screen bg-gray-50 flex items-center justify-center" data-testid="level2-no-categories-root">
+        <div className="text-center" data-testid="level2-no-categories-container">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2" data-testid="level2-no-categories-title">No Categories Found</h2>
+          <p className="text-gray-600 mb-4" data-testid="level2-no-categories-desc">The selected stack has no categories.</p>
           <button
             onClick={onBack}
             className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
+            data-testid="level2-no-categories-back"
           >
             Back to Stacks
           </button>
@@ -100,11 +102,12 @@ const Level2CategoryNavigation = ({
   }
 
   return (
-    <div id="level-2-categories" className={`py-20 bg-gradient-to-br from-gray-50 via-white to-indigo-50/30 ${className}`} {...props}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div id="level-2-categories" className={`py-20 bg-gradient-to-br from-gray-50 via-white to-indigo-50/30 ${className}`} data-testid="level2-root" {...props}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-testid="level2-container">
         {/* Enhanced Header */}
         <motion.div 
           className="mb-16"
+          data-testid="level2-header"
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -114,6 +117,7 @@ const Level2CategoryNavigation = ({
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
             className="mb-8"
+            data-testid="level2-header-back"
           >
             <BackButton 
               onClick={onBack}
@@ -122,25 +126,26 @@ const Level2CategoryNavigation = ({
             />
           </motion.div>
 
-          <div className="text-center">
+          <div className="text-center" data-testid="level2-header-content">
             <motion.div 
               className="flex items-center justify-center space-x-4 mb-6"
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <motion.span 
-                className="text-5xl filter drop-shadow-lg"
+            <motion.span 
+              className="text-5xl filter drop-shadow-lg"
+              data-testid="level2-header-icon"
                 whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
                 transition={{ duration: 0.6 }}
               >
                 {selectedStack.icon}
               </motion.span>
               <div>
-                <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-800 via-indigo-700 to-purple-700 bg-clip-text text-transparent">
+                <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-800 via-indigo-700 to-purple-700 bg-clip-text text-transparent" data-testid="level2-header-title">
                   {selectedStack.label}
                 </h2>
-                <div className="text-lg text-indigo-600 font-medium mt-1">
+                <div className="text-lg text-indigo-600 font-medium mt-1" data-testid="level2-header-subtitle">
                   Testing Categories
                 </div>
               </div>
@@ -158,6 +163,7 @@ const Level2CategoryNavigation = ({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
+              data-testid="level2-header-desc"
             >
               Choose a testing methodology to explore specialized tools and frameworks. 
               <br className="hidden md:block" />
@@ -172,6 +178,7 @@ const Level2CategoryNavigation = ({
           variants={containerVariants}
           initial="hidden"
           animate="visible"
+          data-testid="level2-category-grid"
         >
           {categories.map((category, index) => (
             <motion.div
@@ -179,6 +186,7 @@ const Level2CategoryNavigation = ({
               variants={cardVariants}
               whileHover="hover"
               whileTap="tap"
+              data-testid={`level2-category-card-${category.id}`}
               className={`
                 group relative cursor-pointer rounded-2xl overflow-hidden backdrop-blur-sm
                 ${selectedCategory?.id === category.id 
@@ -204,10 +212,11 @@ const Level2CategoryNavigation = ({
                 style={{ 
                   background: `linear-gradient(90deg, ${category.color || '#3B82F6'}, ${category.color || '#3B82F6'}80)` 
                 }}
+                data-testid={`level2-category-card-bar-${category.id}`}
               />
 
               {/* Content */}
-              <div className="p-8">
+              <div className="p-8" data-testid={`level2-category-card-content-${category.id}`}> 
                 {/* Header with enhanced styling */}
                 <div className="flex items-start justify-between mb-6">
                   <div className="flex-1">
@@ -216,6 +225,7 @@ const Level2CategoryNavigation = ({
                       <motion.div 
                         className="mb-4"
                         whileHover={{ scale: 1.05 }}
+                        data-testid={`level2-category-card-type-${category.id}`}
                       >
                         <span 
                           className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold text-white shadow-lg"
@@ -230,13 +240,13 @@ const Level2CategoryNavigation = ({
                     )}
 
                     {/* Title with gradient */}
-                    <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent group-hover:from-indigo-700 group-hover:to-purple-600 transition-all duration-300">
+                    <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent group-hover:from-indigo-700 group-hover:to-purple-600 transition-all duration-300" data-testid={`level2-category-card-title-${category.id}`}>
                       {category.label}
                     </h3>
 
                     {/* Description */}
                     {category.description && (
-                      <p className="text-gray-600 leading-relaxed mb-6 text-sm">
+                      <p className="text-gray-600 leading-relaxed mb-6 text-sm" data-testid={`level2-category-card-desc-${category.id}`}>
                         {category.description}
                       </p>
                     )}
@@ -247,6 +257,7 @@ const Level2CategoryNavigation = ({
                     className="ml-6 flex-shrink-0"
                     whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
                     transition={{ duration: 0.6 }}
+                    data-testid={`level2-category-card-toolcount-${category.id}`}
                   >
                     <div 
                       className="w-16 h-16 rounded-2xl flex flex-col items-center justify-center text-white font-bold shadow-lg group-hover:shadow-xl transition-all duration-300"
@@ -262,13 +273,13 @@ const Level2CategoryNavigation = ({
                 </div>
 
                 {/* Enhanced Footer */}
-                <div className="flex items-center justify-between pt-6 border-t border-gray-100">
+                <div className="flex items-center justify-between pt-6 border-t border-gray-100" data-testid={`level2-category-card-footer-${category.id}`}> 
                   <div className="flex items-center space-x-2">
                     <div 
                       className="w-3 h-3 rounded-full"
                       style={{ backgroundColor: category.color || '#3B82F6' }}
                     />
-                    <span className="text-sm text-gray-500 font-medium">
+                    <span className="text-sm text-gray-500 font-medium" data-testid={`level2-category-card-footer-tools-${category.id}`}> 
                       {category.toolCount === 1 ? '1 Tool' : `${category.toolCount || 0} Tools`} Available
                     </span>
                   </div>
@@ -278,6 +289,7 @@ const Level2CategoryNavigation = ({
                     className="text-gray-400 group-hover:text-indigo-500"
                     whileHover={{ x: 5 }}
                     transition={{ duration: 0.2 }}
+                    data-testid={`level2-category-card-footer-arrow-${category.id}`}
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -292,6 +304,7 @@ const Level2CategoryNavigation = ({
                     initial={{ scale: 0, rotate: -180 }}
                     animate={{ scale: 1, rotate: 0 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    data-testid={`level2-category-card-selected-indicator-${category.id}`}
                   >
                     <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center shadow-lg">
                       <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -321,11 +334,13 @@ const Level2CategoryNavigation = ({
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
+            data-testid="level2-cta-section"
           >
             <motion.div 
               className="inline-flex items-center space-x-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-8 py-4 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.98 }}
+              data-testid="level2-cta"
               onClick={() => {
                 const nextSection = document.getElementById('level-3-tools')
                 if (nextSection) {
@@ -336,12 +351,13 @@ const Level2CategoryNavigation = ({
               <div 
                 className="w-4 h-4 rounded-full shadow-inner"
                 style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
+                data-testid="level2-cta-dot"
               />
               <div className="text-left">
-                <div className="font-semibold text-lg">
+                <div className="font-semibold text-lg" data-testid="level2-cta-title">
                   Explore {selectedCategory.label} Tools
                 </div>
-                <div className="text-indigo-100 text-sm">
+                <div className="text-indigo-100 text-sm" data-testid="level2-cta-meta">
                   {selectedCategory.toolCount || 0} specialized tools available
                 </div>
               </div>
@@ -349,6 +365,7 @@ const Level2CategoryNavigation = ({
                 animate={{ x: [0, 5, 0] }}
                 transition={{ repeat: Infinity, duration: 1.5 }}
                 className="text-2xl"
+                data-testid="level2-cta-arrow"
               >
                 →
               </motion.div>

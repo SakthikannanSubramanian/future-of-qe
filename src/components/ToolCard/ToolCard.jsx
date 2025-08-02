@@ -70,25 +70,23 @@ const ToolCard = ({
       {...props}
     >
       {/* Card content */}
-      <div className="p-6 h-full flex flex-col">
+      <div className="p-6 h-full flex flex-col" data-testid={`tool-card-content-${tool.id}`}> 
         {/* Header */}
-        <div className="flex items-start justify-between mb-4">
+        <div className="flex items-start justify-between mb-4" data-testid="tool-card-header">
           <div className="flex items-center space-x-3">
             {/* Icon */}
             {tool.icon && (
-              <div className="text-3xl group-hover:scale-110 transition-transform duration-300">
-                {tool.icon}
-              </div>
+              <div className="text-3xl group-hover:scale-110 transition-transform duration-300" data-testid="tool-card-icon">{tool.icon}</div>
             )}
             
             {/* Title and Popular badge */}
             <div>
               <div className="flex items-center space-x-2">
-                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors" data-testid="tool-card-title">
                   {tool.label}
                 </h3>
                 {tool.popular && (
-                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800" data-testid="tool-card-popular-badge">
                     🔥 Popular
                   </span>
                 )}
@@ -107,6 +105,7 @@ const ToolCard = ({
               }
             `}
             aria-label={`${isComparing ? 'Remove from' : 'Add to'} comparison`}
+            data-testid="tool-card-compare-button"
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
@@ -115,12 +114,13 @@ const ToolCard = ({
         </div>
 
         {/* Metadata */}
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex flex-wrap gap-2 mb-4" data-testid="tool-card-metadata">
           {/* Platforms */}
           {tool.platforms && tool.platforms.map(platform => (
             <span 
               key={platform}
               className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+              data-testid={`tool-card-platform-${platform}`}
             >
               {platform}
             </span>
@@ -128,14 +128,14 @@ const ToolCard = ({
           
           {/* Complexity */}
           {tool.complexity && (
-            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getComplexityColor(tool.complexity)}`}>
+            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getComplexityColor(tool.complexity)}`} data-testid="tool-card-complexity-badge">
               {getComplexityLabel(tool.complexity)}
             </span>
           )}
           
           {/* License */}
           {tool.license && (
-            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800" data-testid="tool-card-license-badge">
               {tool.license}
             </span>
           )}
@@ -143,16 +143,17 @@ const ToolCard = ({
 
         {/* Description */}
         {tool['What is it?'] && (
-          <p className="text-sm text-gray-600 flex-grow mb-4 line-clamp-3">
+          <p className="text-sm text-gray-600 flex-grow mb-4 line-clamp-3" data-testid="tool-card-description">
             {tool['What is it?']}
           </p>
         )}
 
         {/* Actions */}
-        <div className="flex space-x-2 mt-auto">
+        <div className="flex space-x-2 mt-auto" data-testid="tool-card-actions">
           <button
             onClick={handleViewDetails}
             className="flex-1 bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
+            data-testid="tool-card-view-details-button"
           >
             View Details
           </button>
@@ -165,6 +166,7 @@ const ToolCard = ({
               }}
               className="px-4 py-2 border border-gray-300 hover:border-gray-400 text-gray-700 rounded-lg text-sm font-medium transition-colors duration-200 hover:bg-gray-50"
               title="Copy install command"
+              data-testid="tool-card-copy-install"
             >
               📋
             </button>
@@ -174,7 +176,7 @@ const ToolCard = ({
 
       {/* Selection indicator */}
       {isSelected && (
-        <div className="absolute top-2 right-12">
+        <div className="absolute top-2 right-12" data-testid="tool-card-selected-indicator">
           <div className="w-6 h-6 bg-primary-500 rounded-full flex items-center justify-center">
             <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
               <path 

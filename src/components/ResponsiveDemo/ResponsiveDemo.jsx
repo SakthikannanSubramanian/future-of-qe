@@ -6,9 +6,9 @@ const ResponsiveDemo = () => {
   const { breakpoint, width, isMobile, isTablet, isDesktop } = useResponsiveBreakpoint()
 
   return (
-    <div className={styles.demo}>
-      <h3>Current Viewport Information</h3>
-      <div className={styles.info}>
+    <div className={styles.demo} data-testid="responsive-demo-container">
+      <h3 data-testid="responsive-demo-title">Current Viewport Information</h3>
+      <div className={styles.info} data-testid="responsive-demo-info">
         <p><strong>Width:</strong> {width}px</p>
         <p><strong>Breakpoint:</strong> {breakpoint}</p>
         <p><strong>Device Type:</strong> {
@@ -16,14 +16,14 @@ const ResponsiveDemo = () => {
         }</p>
       </div>
       
-      <div className={styles.responsiveGrid}>
-        <div className={styles.gridItem}>Item 1</div>
-        <div className={styles.gridItem}>Item 2</div>
-        <div className={styles.gridItem}>Item 3</div>
-        <div className={styles.gridItem}>Item 4</div>
+      <div className={styles.responsiveGrid} data-testid="responsive-demo-grid">
+        <div className={styles.gridItem} data-testid="responsive-demo-grid-item-1">Item 1</div>
+        <div className={styles.gridItem} data-testid="responsive-demo-grid-item-2">Item 2</div>
+        <div className={styles.gridItem} data-testid="responsive-demo-grid-item-3">Item 3</div>
+        <div className={styles.gridItem} data-testid="responsive-demo-grid-item-4">Item 4</div>
       </div>
       
-      <p className={styles.hint}>
+      <p className={styles.hint} data-testid="responsive-demo-hint">
         Try resizing your browser window to see how the form adapts!
       </p>
     </div>
