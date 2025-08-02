@@ -2,7 +2,6 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '../../redux/slices/userSlice'
 import { useTheme } from '../../hooks/useTheme'
-import Counter from '../../components/Counter/Counter'
 import styles from './Dashboard.module.css'
 
 const Dashboard = () => {
@@ -40,11 +39,6 @@ const Dashboard = () => {
                 <span className={styles.statLabel}>Issues Found</span>
               </div>
             </div>
-          </div>
-
-          <div className={styles.card}>
-            <h3>Interactive Counter</h3>
-            <Counter />
           </div>
 
           <div className={styles.card}>

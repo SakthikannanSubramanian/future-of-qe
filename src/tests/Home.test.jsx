@@ -69,7 +69,7 @@ describe('Landing Page Acceptance Criteria', () => {
       renderWithProviders(<Home />)
       
       const questionScreenLink = screen.getByRole('link', { name: /question screen/i })
-      expect(questionScreenLink).toHaveAttribute('href', '/questionnaire')
+      expect(questionScreenLink).toHaveAttribute('href', '/questions')
     })
 
     test('should have correct link to tech stack when clicking Tech Stack', () => {
