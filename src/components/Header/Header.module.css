@@ -1,3 +1,52 @@
+.cognizantLogoImg {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+@media (max-width: 1024px) {
+  .cognizantLogoImg {
+    height: 28px;
+  }
+}
+@media (max-width: 768px) {
+  .cognizantLogoImg {
+    height: 24px;
+  }
+}
+@media (max-width: 480px) {
+  .cognizantLogoImg {
+    height: 20px;
+  }
+}
+.modalOverlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.25);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s;
+}
+.modalContent {
+  background: var(--bg-secondary, #f3f4f6);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 0;
+  min-width: 260px;
+  max-width: 95vw;
+  max-height: 90vh;
+  position: relative;
+  animation: modalIn 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes modalIn {
+  from { transform: scale(0.92) translateY(30px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
+}
 /* Side Drawer Styles */
 .sideDrawerOverlay {
   position: fixed;
@@ -103,6 +152,14 @@
   gap: 2rem;
   margin: 0;
   padding: 0;
+}
+
+@media (max-width: 768px) {
+  .sideDrawer .navList {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
 }
 
 .navLink {
