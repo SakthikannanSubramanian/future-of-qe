@@ -276,12 +276,22 @@ const initialQuestionnaireData = [
 // Async thunk for loading questionnaire data
 export const loadQuestionnaire = createAsyncThunk(
   'questionnaire/loadQuestionnaire',
-  async () => {
-    // Simulate API call - in real app, this would call your backend
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    // For now, return the static data
-    return initialQuestionnaireData
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch('http://localhost:8082/api/v1/questions');
+      if (!response.ok) {
+        throw new Error('Backend returned error');
+      }
+      const data = await response.json();
+      // If backend returns empty or invalid, fallback
+      if (!data || !Array.isArray(data) || data.length === 0) {
+        throw new Error('Backend returned no data');
+      }
+      return data;
+    } catch (err) {
+      // Fallback to static data
+      return initialQuestionnaireData;
+    }
   }
 )
 

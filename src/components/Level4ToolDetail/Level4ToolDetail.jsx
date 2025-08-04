@@ -137,6 +137,16 @@ const Level4ToolDetail = ({
     }
   }, [tool?.id])
 
+  // Scroll to the Tool Detail heading with offset on mount
+  useEffect(() => {
+    const heading = document.querySelector('[data-testid="level-4-tool-title"]');
+    if (heading) {
+      const offset = 120; // increased offset for icon visibility
+      const y = heading.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  }, []);
+
   if (!tool) {
     return null
   }

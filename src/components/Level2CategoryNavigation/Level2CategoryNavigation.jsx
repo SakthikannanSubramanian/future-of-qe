@@ -50,17 +50,19 @@ const Level2CategoryNavigation = ({
     }
   }
 
+  const scrollToWithOffset = (element, offset = 80) => {
+    if (!element) return;
+    const y = element.getBoundingClientRect().top + window.pageYOffset - offset;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  };
+
   const handleCategorySelect = (category) => {
     onSelectCategory?.(category)
-    
-    // Smooth scroll to next section
+    // Smooth scroll to next section with offset
     setTimeout(() => {
       const nextSection = document.getElementById('level-3-tools')
       if (nextSection) {
-        nextSection.scrollIntoView({ 
-          behavior: 'smooth',
-          block: 'start'
-        })
+        scrollToWithOffset(nextSection)
       }
     }, 300)
   }
@@ -180,155 +182,166 @@ const Level2CategoryNavigation = ({
           animate="visible"
           data-testid="level2-category-grid"
         >
-          {categories.map((category, index) => (
-            <motion.div
-              key={category.id}
-              variants={cardVariants}
-              whileHover="hover"
-              whileTap="tap"
-              data-testid={`level2-category-card-${category.id}`}
-              className={`
-                group relative cursor-pointer rounded-2xl overflow-hidden backdrop-blur-sm
-                ${selectedCategory?.id === category.id 
-                  ? 'ring-4 ring-indigo-500 shadow-2xl shadow-indigo-500/25 scale-105' 
-                  : 'shadow-lg hover:shadow-xl hover:shadow-indigo-200/30'
-                }
-                transition-all duration-500 bg-white/90 hover:bg-white
-              `}
-              onClick={() => handleCategorySelect(category)}
-              role="button"
-              tabIndex={0}
-              aria-label={`Select ${category.label} testing category`}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault()
-                  handleCategorySelect(category)
-                }
-              }}
-            >
-              {/* Gradient Top Bar */}
-              <div 
-                className="h-2 bg-gradient-to-r"
-                style={{ 
-                  background: `linear-gradient(90deg, ${category.color || '#3B82F6'}, ${category.color || '#3B82F6'}80)` 
+          {categories.map((category, index) => {
+            // Calculate toolCount from tools array if not present
+            const toolCount = typeof category.toolCount === 'number'
+              ? category.toolCount
+              : Array.isArray(category.tools)
+                ? category.tools.length
+                : 0;
+            return (
+              <motion.div
+                key={category.id}
+                variants={cardVariants}
+                whileHover="hover"
+                whileTap="tap"
+                data-testid={`level2-category-card-${category.id}`}
+                className={`
+                  group relative cursor-pointer rounded-2xl overflow-hidden backdrop-blur-sm
+                  ${selectedCategory?.id === category.id 
+                    ? 'ring-4 ring-indigo-500 shadow-2xl shadow-indigo-500/25 scale-105' 
+                    : 'shadow-lg hover:shadow-xl hover:shadow-indigo-200/30'
+                  }
+                  transition-all duration-500 bg-white/90 hover:bg-white
+                `}
+                onClick={() => handleCategorySelect(category)}
+                role="button"
+                tabIndex={0}
+                aria-label={`Select ${category.label} testing category`}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    handleCategorySelect(category)
+                  }
                 }}
-                data-testid={`level2-category-card-bar-${category.id}`}
-              />
+              >
+                {/* Gradient Top Bar */}
+                <div 
+                  className="h-2 bg-gradient-to-r"
+                  style={{ 
+                    background: `linear-gradient(90deg, ${category.color || '#3B82F6'}, ${category.color || '#3B82F6'}80)` 
+                  }}
+                  data-testid={`level2-category-card-bar-${category.id}`}
+                />
 
-              {/* Content */}
-              <div className="p-8" data-testid={`level2-category-card-content-${category.id}`}> 
-                {/* Header with enhanced styling */}
-                <div className="flex items-start justify-between mb-6">
-                  <div className="flex-1">
-                    {/* Type Badge with glow effect */}
-                    {category.type && (
+                {/* Content */}
+                <div className="p-4 flex flex-col items-center justify-center h-full min-h-[140px]" data-testid={`level2-category-card-content-${category.id}`}> 
+                  {/* Header with enhanced styling */}
+                  <div className="flex flex-col items-center justify-center w-full mb-4">
+                    <div className="flex-1 w-full flex flex-col items-center justify-center">
+                      {/* Type Badge with glow effect */}
+                      {category.type && (
+                        <motion.div 
+                          className="mb-2"
+                          whileHover={{ scale: 1.05 }}
+                          data-testid={`level2-category-card-type-${category.id}`}
+                        >
+                          <span 
+                            className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold text-white shadow-lg"
+                            style={{ 
+                              backgroundColor: category.color || '#3B82F6',
+                              boxShadow: `0 4px 14px ${category.color || '#3B82F6'}30`
+                            }}
+                          >
+                            {category.type}
+                          </span>
+                        </motion.div>
+                      )}
+
+                      {/* Title with gradient */}
+                      <h3 className="text-lg font-bold mb-2 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent group-hover:from-indigo-700 group-hover:to-purple-600 transition-all duration-300 text-center" data-testid={`level2-category-card-title-${category.id}`}>
+                        {category.label}
+                      </h3>
+
+                      {/* Description */}
+                      {category.description && (
+                        <p className="text-gray-600 leading-relaxed mb-3 text-xs text-center" data-testid={`level2-category-card-desc-${category.id}`}>
+                          {category.description}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Enhanced Tool Count Badge - only show if toolCount > 0 */}
+                    {toolCount > 0 && (
                       <motion.div 
-                        className="mb-4"
-                        whileHover={{ scale: 1.05 }}
-                        data-testid={`level2-category-card-type-${category.id}`}
+                        className="mt-1 flex-shrink-0"
+                        whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
+                        transition={{ duration: 0.6 }}
+                        data-testid={`level2-category-card-toolcount-${category.id}`}
                       >
-                        <span 
-                          className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold text-white shadow-lg"
+                        <div 
+                          className="w-10 h-10 rounded-2xl flex flex-col items-center justify-center text-white font-bold shadow-lg group-hover:shadow-xl transition-all duration-300"
                           style={{ 
-                            backgroundColor: category.color || '#3B82F6',
-                            boxShadow: `0 4px 14px ${category.color || '#3B82F6'}30`
+                            background: `linear-gradient(135deg, ${category.color || '#3B82F6'}, ${category.color || '#3B82F6'}dd)`,
+                            boxShadow: `0 8px 25px ${category.color || '#3B82F6'}30`
                           }}
                         >
-                          {category.type}
-                        </span>
+                          <div className="text-base">{toolCount}</div>
+                          <div className="text-[10px] opacity-90">tools</div>
+                        </div>
                       </motion.div>
                     )}
-
-                    {/* Title with gradient */}
-                    <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent group-hover:from-indigo-700 group-hover:to-purple-600 transition-all duration-300" data-testid={`level2-category-card-title-${category.id}`}>
-                      {category.label}
-                    </h3>
-
-                    {/* Description */}
-                    {category.description && (
-                      <p className="text-gray-600 leading-relaxed mb-6 text-sm" data-testid={`level2-category-card-desc-${category.id}`}>
-                        {category.description}
-                      </p>
-                    )}
                   </div>
 
-                  {/* Enhanced Tool Count Badge */}
-                  <motion.div 
-                    className="ml-6 flex-shrink-0"
-                    whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
-                    transition={{ duration: 0.6 }}
-                    data-testid={`level2-category-card-toolcount-${category.id}`}
-                  >
-                    <div 
-                      className="w-16 h-16 rounded-2xl flex flex-col items-center justify-center text-white font-bold shadow-lg group-hover:shadow-xl transition-all duration-300"
-                      style={{ 
-                        background: `linear-gradient(135deg, ${category.color || '#3B82F6'}, ${category.color || '#3B82F6'}dd)`,
-                        boxShadow: `0 8px 25px ${category.color || '#3B82F6'}30`
-                      }}
-                    >
-                      <div className="text-xl">{category.toolCount || 0}</div>
-                      <div className="text-xs opacity-90">tools</div>
-                    </div>
-                  </motion.div>
-                </div>
-
-                {/* Enhanced Footer */}
-                <div className="flex items-center justify-between pt-6 border-t border-gray-100" data-testid={`level2-category-card-footer-${category.id}`}> 
-                  <div className="flex items-center space-x-2">
-                    <div 
-                      className="w-3 h-3 rounded-full"
-                      style={{ backgroundColor: category.color || '#3B82F6' }}
-                    />
-                    <span className="text-sm text-gray-500 font-medium" data-testid={`level2-category-card-footer-tools-${category.id}`}> 
-                      {category.toolCount === 1 ? '1 Tool' : `${category.toolCount || 0} Tools`} Available
-                    </span>
-                  </div>
-                  
-                  {/* Enhanced Arrow */}
-                  <motion.div
-                    className="text-gray-400 group-hover:text-indigo-500"
-                    whileHover={{ x: 5 }}
-                    transition={{ duration: 0.2 }}
-                    data-testid={`level2-category-card-footer-arrow-${category.id}`}
-                  >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </motion.div>
-                </div>
-
-                {/* Selection Indicator */}
-                {selectedCategory?.id === category.id && (
-                  <motion.div 
-                    className="absolute top-4 right-4"
-                    initial={{ scale: 0, rotate: -180 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    data-testid={`level2-category-card-selected-indicator-${category.id}`}
-                  >
-                    <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center shadow-lg">
-                      <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path 
-                          fillRule="evenodd" 
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" 
-                          clipRule="evenodd" 
+                  {/* Enhanced Footer - only show if toolCount > 0 */}
+                  {toolCount > 0 && (
+                    <div className="flex items-center justify-between pt-3 border-t border-gray-100 w-full" data-testid={`level2-category-card-footer-${category.id}`}> 
+                      <div className="flex items-center space-x-2">
+                        <div 
+                          className="w-2 h-2 rounded-full"
+                          style={{ backgroundColor: category.color || '#3B82F6' }}
                         />
-                      </svg>
+                        <span className="text-xs text-gray-500 font-medium" data-testid={`level2-category-card-footer-tools-${category.id}`}> 
+                          {toolCount === 1 ? '1 Tool' : `${toolCount} Tools`} Available
+                        </span>
+                      </div>
+                      {/* Enhanced Arrow */}
+                      <motion.div
+                        className="text-gray-400 group-hover:text-indigo-500"
+                        whileHover={{ x: 5 }}
+                        transition={{ duration: 0.2 }}
+                        data-testid={`level2-category-card-footer-arrow-${category.id}`}
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                      </motion.div>
                     </div>
-                  </motion.div>
-                )}
+                  )}
 
-                {/* Shimmer Effect */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out" />
+                  {/* Selection Indicator */}
+                  {selectedCategory?.id === category.id && (
+                    <motion.div 
+                      className="absolute top-2 right-2"
+                      initial={{ scale: 0, rotate: -180 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                      data-testid={`level2-category-card-selected-indicator-${category.id}`}
+                    >
+                      <div className="w-6 h-6 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center shadow-lg">
+                        <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                          <path 
+                            fillRule="evenodd" 
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" 
+                            clipRule="evenodd" 
+                          />
+                        </svg>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Shimmer Effect */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out" />
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </motion.div>
 
-        {/* Enhanced Selected Category Info */}
-        {selectedCategory && (
+        {/* Enhanced Selected Category Info - only show if selectedCategory && toolCount > 0 */}
+        {selectedCategory && ((typeof selectedCategory.toolCount === 'number' && selectedCategory.toolCount > 0) || (Array.isArray(selectedCategory.tools) && selectedCategory.tools.length > 0)) && (
           <motion.div 
             className="text-center"
             initial={{ opacity: 0, y: 30 }}
@@ -344,7 +357,7 @@ const Level2CategoryNavigation = ({
               onClick={() => {
                 const nextSection = document.getElementById('level-3-tools')
                 if (nextSection) {
-                  nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  scrollToWithOffset(nextSection)
                 }
               }}
             >
@@ -358,7 +371,11 @@ const Level2CategoryNavigation = ({
                   Explore {selectedCategory.label} Tools
                 </div>
                 <div className="text-indigo-100 text-sm" data-testid="level2-cta-meta">
-                  {selectedCategory.toolCount || 0} specialized tools available
+                  {(typeof selectedCategory.toolCount === 'number' && selectedCategory.toolCount > 0)
+                    ? `${selectedCategory.toolCount} specialized tools available`
+                    : Array.isArray(selectedCategory.tools) && selectedCategory.tools.length > 0
+                      ? `${selectedCategory.tools.length} specialized tools available`
+                      : ''}
                 </div>
               </div>
               <motion.div
@@ -378,18 +395,11 @@ const Level2CategoryNavigation = ({
 }
 
 Level2CategoryNavigation.propTypes = {
-  categories: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-    description: PropTypes.string,
-    type: PropTypes.string,
-    color: PropTypes.string,
-    toolCount: PropTypes.number,
-  })),
+  categories: PropTypes.array,
   selectedStack: PropTypes.object,
   selectedCategory: PropTypes.object,
-  onSelectCategory: PropTypes.func.isRequired,
-  onBack: PropTypes.func.isRequired,
+  onSelectCategory: PropTypes.func,
+  onBack: PropTypes.func,
   className: PropTypes.string,
 }
 
