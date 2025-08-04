@@ -13,6 +13,7 @@ import {
   nextCategory,
   previousCategory
 } from '../../redux/slices/questionnaireSlice'
+import { selectProjectDetails } from '../../redux/slices/projectSlice'
 
 import { ASSESSMENT_STATUS } from '../../constants/statusTypes'
 import { useTheme } from '../../hooks/useTheme'
@@ -30,6 +31,7 @@ const Questions = () => {
   const loading = useSelector(selectQuestionnaireLoading)
   const error = useSelector(selectQuestionnaireError)
   const submitStatus = useSelector(selectSubmitStatus)
+  const projectDetails = useSelector(selectProjectDetails)
 
   // Local state for all responses across categories
   const [allResponses, setAllResponses] = useState({}) // Keyed by `${categoryIndex}-${questionIndex}`
@@ -78,6 +80,13 @@ const Questions = () => {
       navigate('/assessment/success');
     }
   }, [submitStatus, navigate]);
+
+  // Redirect to pre-questionnaire if project details are missing
+  useEffect(() => {
+    if (!projectDetails) {
+      navigate('/pre-questionnaire')
+    }
+  }, [projectDetails, navigate])
 
   // Helper functions
   const getTotalQuestions = () => {

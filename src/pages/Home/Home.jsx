@@ -28,7 +28,7 @@ const Home = () => {
         {/* 3 Navigation Icons */}
         <section className={styles.navigation}>
           <div className={styles.navigationGrid}>
-            <Link to="/questions" className={styles.navigationCard} aria-label="Question Screen">
+            <Link to="/pre-questionnaire" className={styles.navigationCard} aria-label="Question Screen">
               <div className={styles.navigationIcon}>
                 <span className={styles.iconSymbol}>❓</span>
               </div>

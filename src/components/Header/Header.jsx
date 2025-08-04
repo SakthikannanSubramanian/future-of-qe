@@ -49,6 +49,7 @@ const Header = () => {
           Home
         </button>
       </li>
+      {/* Questionnaire button removed as requested */}
       <li data-testid="header-nav-about">
         <button className={styles.navLink} style={{ background: 'none' }} onClick={() => { setModal('about'); setDrawerOpen(false); }} data-testid="header-nav-link-about">
           {isMobile && <span style={{ marginRight: 8 }}>{infoIcon}</span>}About

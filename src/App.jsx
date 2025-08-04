@@ -10,6 +10,7 @@ import Contact from './pages/Contact/Contact'
 import Dashboard from './pages/Dashboard/Dashboard'
 import Login from './pages/Login/Login'
 import Questions from './pages/Questions/Questions'
+import PreQuestionnaireForm from './pages/Questions/PreQuestionnaireForm'
 import TechStackNew from './pages/TechStack/TechStackNew'
 import AssessmentSuccess from './pages/AssessmentSuccess/AssessmentSuccess'
 import NotFound from './pages/NotFound/NotFound'
@@ -29,6 +30,7 @@ function App() {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/pre-questionnaire" element={<PreQuestionnaireForm />} />
                 <Route path="/questions" element={<Questions />} />
                 <Route path="/tech-stack" element={<TechStackNew />} />
                 <Route path="/assessment-success" element={<AssessmentSuccess />} />
