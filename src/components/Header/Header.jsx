@@ -132,9 +132,9 @@ const Header = () => {
           <button onClick={() => { setModal(null); navigate('/'); }} aria-label="Close" style={{ position: 'absolute', top: 12, right: 12, background: 'none', border: 'none', fontSize: 24, color: '#6366f1', cursor: 'pointer' }}>×</button>
           <div style={{ fontSize: 22, fontWeight: 600, marginBottom: 8 }}>Contact Information</div>
           <div style={{ margin: '12px 0', fontSize: 16 }}>
-            <b>Email:</b> <a href="mailto:sakthikannan.subramanian@cognizant.com" style={{ color: '#6366f1' }}>sakthikannan.subramanian@cognizant.com</a><br/>
-            <b>Signature:</b> Sakthikannan Subramanian<br/>
-            <span style={{ color: '#555', fontSize: 14, display: 'block', marginTop: 8 }}>Note: For any queries, please reach out to the above email address.</span>
+            <span style={{ color: '#555', fontSize: 15, display: 'block', marginTop: 8 }}>
+              For any queries, please contact your Cognizant representative or use the official support channels.
+            </span>
           </div>
         </div>
       </Modal>
