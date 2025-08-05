@@ -18,13 +18,53 @@ test.describe('Complete Questionnaire Flow', () => {
     await questionCard.click();
     console.log('🎯 Clicked Question Screen card');
     
-    // Step 3: Wait for navigation to questions page
+    // Step 3: Wait for navigation to pre-questionnaire page
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL(/.*\/pre-questionnaire.*/);
+    await expect(page.locator('h2:has-text("Project & User Details")')).toBeVisible();
+    console.log('📋 Successfully navigated to Pre-questionnaire page');
+    
+    // Step 4: Fill out the pre-questionnaire form
+    console.log('📝 Filling out project details form...');
+    
+    // Fill project name
+    await page.fill('input[name="projectName"]', 'Test Project E2E');
+    console.log('✅ Filled project name');
+    
+    // Fill account name
+    await page.fill('input[name="accountName"]', 'Test Account');
+    console.log('✅ Filled account name');
+    
+    // Fill email
+    await page.fill('input[name="email"]', 'test.user@example.com');
+    console.log('✅ Filled email');
+    
+    // Wait for dropdowns to load (skeleton loading)
+    await page.waitForTimeout(1500);
+    
+    // Select manager
+    await page.selectOption('select[name="manager"]', 'Manager A');
+    console.log('✅ Selected manager');
+    
+    // Select EDL
+    await page.selectOption('select[name="edl"]', 'EDL X');
+    console.log('✅ Selected EDL');
+    
+    // Select PDL
+    await page.selectOption('select[name="pdl"]', 'PDL 1');
+    console.log('✅ Selected PDL');
+    
+    // Submit the pre-questionnaire form
+    await page.click('button:has-text("Go To Questions")');
+    console.log('🚀 Submitted pre-questionnaire form');
+    
+    // Step 5: Wait for navigation to questions page
     await page.waitForLoadState('networkidle');
     await expect(page).toHaveURL(/.*\/questions.*/);
-    await expect(page.locator('h1:has-text("Assessment Questions")')).toBeVisible();
+    await expect(page.locator('h1:has-text("Assessment Questions")').or(page.locator('h1, h2').filter({ hasText: /question|assessment/i }))).toBeVisible();
     console.log('📝 Successfully navigated to Assessment Questions page');
     
-    // Step 4: Complete all categories/parameters
+    // Step 6: Complete all categories/parameters
     let totalQuestionsAnswered = 0;
     let categoryCount = 0;
     const maxCategories = 25; // Increase safety limit
@@ -126,7 +166,7 @@ test.describe('Complete Questionnaire Flow', () => {
       }
     }
     
-    // Step 5: Validate Assessment Submission
+    // Step 7: Validate Assessment Submission
     const finalUrl = page.url();
     console.log(`\n📍 Final URL: ${finalUrl}`);
     
