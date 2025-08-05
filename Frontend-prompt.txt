@@ -1,0 +1,68 @@
+As a Senior UI Quality Engineer, I need you to generate a complete, enterprise-grade testing ecosystem that covers UI testing requirements for modern web applications following the best practice. This framework should be production-ready, scalable, and follow industry best practices.
+CODE QUALITY REQUIREMENTS:
+1. TypeScript 5.7.2 with strict mode and 100% type coverage
+2. ESLint + Prettier with error prevention rules
+3. JSDoc comments for all public methods
+4. Async/await patterns with proper error handling
+5. Page Object Model with dependency injection patterns
+6. Test isolation, cleanup, and parallel execution support
+================================================================================
+1. CORE FUNCTIONAL TESTING (/test/functional)
+Primary Tool: Playwright with TypeScript + Allure Reporting
+Technology Stack:
+- Playwright 1.51.1 (Microsoft's modern automation framework)
+- TypeScript 5.7.2 (type safety and maintainability)
+- Allure TestOps (comprehensive test reporting and analytics)
+Coverage Areas:
+- Cross-browser automation (Chromium, Firefox, WebKit)
+- User authentication and authorization flows
+- Form validation, submission, and file operations
+- Multi-page workflows and navigation testing
+- Mobile and desktop responsive testing
+2.VISUAL REGRESSION TESTING (/test/visual)
+Primary Tool: Percy (Visual testing platform leader)
+Coverage Areas:
+- Cross-browser visual comparisons
+- Component-level and full-page screenshots
+- Responsive design validation
+- Dark/light theme testing
+- Dynamic content handling
+3.END-TO-END TESTING (/test/e2e)
+Primary Tool: Playwright (comprehensive E2E automation)
+Coverage Areas:
+- Complete user journey validation
+- Cross-platform testing (desktop/mobile)
+- Real browser automation
+- Network condition simulation
+- Session and cookie management
+4. MONKEY TESTING (/test/monkey)
+Primary Tool: Gremlins.js + Custom Chaos Testing (automated chaos testing)
+Coverage Areas:
+- Random user interaction simulation (clicks, typing, scrolling)
+- Edge case discovery through unpredictable input patterns
+- Application stability testing under random stress
+- UI component resilience validation
+- Memory leak detection through prolonged random interactions
+- Error boundary and exception handling testing
+- Performance degradation detection under chaos conditions
+5. ANALYTICS TESTING (/test/analytics)
+Primary Tool: Google Analytics Testing + Custom Analytics Validation
+Coverage Areas:
+- Event tracking validation (clicks, page views, conversions)
+- User journey and funnel analytics verification
+- Custom dimension and metric validation
+- E-commerce tracking and goal completion testing
+- Cross-domain and cross-device tracking validation
+- Data layer and Tag Manager implementation testing
+- Privacy compliance and consent management validation
+- Real-time analytics data verification
+6. PERFORMANCE TESTING MODULE (/test/performance)
+Primary Tool: Lighthouse CI (Google's industry standard)
+Coverage Areas:
+- Core Web Vitals (LCP, FID, CLS, TTFB, INP)
+- Page Load Performance with detailed metrics
+- Bundle size analysis and optimization recommendations
+- Progressive Web App auditing
+- Accessibility performance impact
+
+Create only 2 happy path and 1 negative test cases per category

@@ -9,6 +9,56 @@ import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, Legend, Ra
 // Table and filter helpers
 const unique = (arr) => Array.from(new Set(arr));
 
+// --- GraphCard component for chevron filter toggle ---
+function GraphCard(props) {
+  const { title, filters, setFilters, data, showFiltersDefault = false, chevronTestId, children } = props;
+  const [showFilters, setShowFilters] = React.useState(showFiltersDefault);
+  return (
+    <div className={styles.card} style={{ minHeight: 320, position: 'relative' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+        <h3 style={{ margin: 0 }}>{title}</h3>
+        <button
+          onClick={() => setShowFilters(v => !v)}
+          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, marginLeft: 8 }}
+          aria-label="Show filters"
+          data-testid={chevronTestId}
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+        </button>
+      </div>
+      {showFilters && (
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
+          <select data-testid="filter-edl" value={filters.edl} onChange={e => setFilters(f => ({ ...f, edl: e.target.value }))}>
+            <option value="">All EDLs</option>
+            {data.filters?.edlOptions.map(e => <option key={e} value={e}>{e}</option>)}
+          </select>
+          <select data-testid="filter-manager" value={filters.manager} onChange={e => setFilters(f => ({ ...f, manager: e.target.value }))}>
+            <option value="">All Managers</option>
+            {data.filters?.managerOptions.map(m => <option key={m} value={m}>{m}</option>)}
+          </select>
+          <select data-testid="filter-account" value={filters.account} onChange={e => setFilters(f => ({ ...f, account: e.target.value }))}>
+            <option value="">All Accounts</option>
+            {data.filters?.accountOptions.map(a => <option key={a} value={a}>{a}</option>)}
+          </select>
+          <select data-testid="filter-project" value={filters.project} onChange={e => setFilters(f => ({ ...f, project: e.target.value }))}>
+            <option value="">All Projects</option>
+            {data.filters?.projectOptions.map(p => <option key={p} value={p}>{p}</option>)}
+          </select>
+          <input
+            data-testid="filter-search"
+            type="text"
+            placeholder="Search project or manager..."
+            value={filters.search}
+            onChange={e => setFilters(f => ({ ...f, search: e.target.value }))}
+            style={{ minWidth: 140 }}
+          />
+        </div>
+      )}
+      {children}
+    </div>
+  );
+}
+
 const Dashboard = () => {
   const dispatch = useDispatch();
   const { theme } = useTheme();
@@ -41,19 +91,21 @@ const Dashboard = () => {
     );
   }, [data, filters]);
 
-  // Summary metrics
+  // Summary metrics (cumulative, unique projects, based on UNFILTERED data)
   const summary = useMemo(() => {
-    if (!data) return { edl: {}, manager: {} };
+    if (!data) return { edl: {}, manager: {}, totalProjects: 0 };
     const edl = {};
     const manager = {};
+    const projectSet = new Set();
     (data.filters?.edlOptions || []).forEach(e => edl[e] = 0);
     (data.filters?.managerOptions || []).forEach(m => manager[m] = 0);
-    filteredAssessments.forEach(a => {
+    (data.assessments || []).forEach(a => {
+      projectSet.add(a.projectName);
       edl[a.edl] = (edl[a.edl] || 0) + 1;
       manager[a.manager] = (manager[a.manager] || 0) + 1;
     });
-    return { edl, manager };
-  }, [data, filteredAssessments]);
+    return { edl, manager, totalProjects: projectSet.size };
+  }, [data]);
 
   // Heatmap data
   const heatmapData = useMemo(() => {
@@ -151,67 +203,46 @@ const Dashboard = () => {
   }
   if (!data) return null;
 
+  // ...existing code...
   return (
     <div className={`${styles.dashboard} ${styles[theme]}`} data-testid="dashboard-root">
       <div className={styles.container}>
         <header className={styles.header}>
-          <h1 data-testid="dashboard-title">Automation Maturity Dashboard</h1>
-          <p>Visualize and analyze assessment results across projects, managers, and time.</p>
+          <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
+            <div>
+              <h1 data-testid="dashboard-title">Automation Maturity Dashboard</h1>
+              <p>Visualize and analyze assessment results across projects, managers, and time.</p>
+            </div>
+          </div>
         </header>
 
-        {/* Filters */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem' }} data-testid="dashboard-filters">
-          <select data-testid="filter-edl" value={filters.edl} onChange={e => setFilters(f => ({ ...f, edl: e.target.value }))}>
-            <option value="">All EDLs</option>
-            {data.filters?.edlOptions.map(e => <option key={e} value={e}>{e}</option>)}
-          </select>
-          <select data-testid="filter-manager" value={filters.manager} onChange={e => setFilters(f => ({ ...f, manager: e.target.value }))}>
-            <option value="">All Managers</option>
-            {data.filters?.managerOptions.map(m => <option key={m} value={m}>{m}</option>)}
-          </select>
-          <select data-testid="filter-account" value={filters.account} onChange={e => setFilters(f => ({ ...f, account: e.target.value }))}>
-            <option value="">All Accounts</option>
-            {data.filters?.accountOptions.map(a => <option key={a} value={a}>{a}</option>)}
-          </select>
-          <select data-testid="filter-project" value={filters.project} onChange={e => setFilters(f => ({ ...f, project: e.target.value }))}>
-            <option value="">All Projects</option>
-            {data.filters?.projectOptions.map(p => <option key={p} value={p}>{p}</option>)}
-          </select>
-          <input
-            data-testid="filter-search"
-            type="text"
-            placeholder="Search project or manager..."
-            value={filters.search}
-            onChange={e => setFilters(f => ({ ...f, search: e.target.value }))}
-            style={{ flex: 1, minWidth: 180 }}
-          />
-        </div>
-
-        {/* Summary metrics */}
-        <div className={styles.grid} style={{ marginBottom: '2rem' }} data-testid="dashboard-summary">
-          <div className={styles.card} data-testid="summary-edl">
-            <h3>Projects by EDL</h3>
-            <ul>
-              {Object.entries(summary.edl).map(([edl, count]) => (
-                <li key={edl}>{edl}: <b>{count}</b></li>
-              ))}
-            </ul>
+        {/* --- Summary Metrics Section (cumulative, unique projects) --- */}
+        <section style={{ display: 'flex', gap: '2rem', margin: '2rem 0', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <div style={{ minWidth: 180, background: '#f8fafc', borderRadius: 12, boxShadow: '0 2px 8px #e0e7ef', padding: '1.5rem', textAlign: 'center' }}>
+            <div style={{ fontSize: 18, fontWeight: 600, color: '#6366f1' }}>Projects with Submissions</div>
+            <div style={{ fontSize: 32, fontWeight: 700, color: '#1e293b', marginTop: 8 }}>{summary.totalProjects}</div>
           </div>
-          <div className={styles.card} data-testid="summary-manager">
-            <h3>Projects by Manager</h3>
-            <ul>
-              {Object.entries(summary.manager).map(([manager, count]) => (
-                <li key={manager}>{manager}: <b>{count}</b></li>
-              ))}
-            </ul>
+          <div style={{ minWidth: 180, background: '#f8fafc', borderRadius: 12, boxShadow: '0 2px 8px #e0e7ef', padding: '1.5rem', textAlign: 'center' }}>
+            <div style={{ fontSize: 18, fontWeight: 600, color: '#6366f1' }}>Owned by EDL</div>
+            <div style={{ fontSize: 32, fontWeight: 700, color: '#1e293b', marginTop: 8 }}>{Object.values(summary.edl).reduce((a, b) => a + (b || 0), 0)}</div>
           </div>
-        </div>
+          <div style={{ minWidth: 180, background: '#f8fafc', borderRadius: 12, boxShadow: '0 2px 8px #e0e7ef', padding: '1.5rem', textAlign: 'center' }}>
+            <div style={{ fontSize: 18, fontWeight: 600, color: '#6366f1' }}>Owned by Manager</div>
+            <div style={{ fontSize: 32, fontWeight: 700, color: '#1e293b', marginTop: 8 }}>{Object.values(summary.manager).reduce((a, b) => a + (b || 0), 0)}</div>
+          </div>
+        </section>
 
-        {/* Visualizations */}
-        <div className={styles.grid} style={{ marginBottom: '2rem' }} data-testid="dashboard-visualizations">
-          {/* Heatmap */}
-          <div className={styles.card} style={{ minHeight: 320 }} data-testid="dashboard-heatmap">
-            <h3>Automation Maturity Heatmap</h3>
+        {/* Visualizations with chevron filter toggles */}
+        <div className={styles.grid} style={{ marginBottom: '2rem', gap: '2rem', alignItems: 'flex-start' }} data-testid="dashboard-visualizations">
+          {/* Heatmap with chevron filter toggle */}
+          <GraphCard
+            title="Automation Maturity Heatmap"
+            filters={filters}
+            setFilters={setFilters}
+            data={data}
+            showFiltersDefault={false}
+            chevronTestId="dashboard-heatmap-chevron"
+          >
             {/* Simple heatmap using colored divs for each cell */}
             {heatmapData.length ? (
               <div style={{ overflowX: 'auto' }}>
@@ -226,7 +257,7 @@ const Dashboard = () => {
                   </thead>
                   <tbody>
                     {heatmapData.map((row, i) => (
-                      <tr key={row.project}>
+                      <tr key={row.project + '-' + Object.values(row).join('-') + '-' + i}>
                         <td style={{ padding: 4 }}>{row.project}</td>
                         {Object.entries(row).filter(([k]) => k !== 'project').map(([param, level]) => (
                           <td key={param} style={{ padding: 0 }}>
@@ -263,11 +294,17 @@ const Dashboard = () => {
                 </div>
               </div>
             ) : <div>No data for heatmap.</div>}
-          </div>
+          </GraphCard>
 
-          {/* Time Series */}
-          <div className={styles.card} style={{ minHeight: 320 }} data-testid="dashboard-timeseries">
-            <h3>Automation Maturity Over Time</h3>
+          {/* Time Series with chevron filter toggle */}
+          <GraphCard
+            title="Automation Maturity Over Time"
+            filters={filters}
+            setFilters={setFilters}
+            data={data}
+            showFiltersDefault={false}
+            chevronTestId="dashboard-timeseries-chevron"
+          >
             {timeSeriesData.length ? (
               <ResponsiveContainer width="100%" height={220}>
                 <LineChart data={timeSeriesData} margin={{ top: 16, right: 16, left: 0, bottom: 0 }}>
@@ -280,11 +317,17 @@ const Dashboard = () => {
                 </LineChart>
               </ResponsiveContainer>
             ) : <div>No data for time series.</div>}
-          </div>
+          </GraphCard>
 
-          {/* Radar Chart */}
-          <div className={styles.card} style={{ minHeight: 320 }} data-testid="dashboard-radar">
-            <h3>Parameter Performance (Radar)</h3>
+          {/* Radar Chart with chevron filter toggle */}
+          <GraphCard
+            title="Parameter Performance (Radar)"
+            filters={filters}
+            setFilters={setFilters}
+            data={data}
+            showFiltersDefault={false}
+            chevronTestId="dashboard-radar-chevron"
+          >
             {radarData.length ? (
               <ResponsiveContainer width="100%" height={220}>
                 <RadarChart data={radarData} outerRadius={80}>
@@ -296,35 +339,93 @@ const Dashboard = () => {
                 </RadarChart>
               </ResponsiveContainer>
             ) : <div>No data for radar chart.</div>}
+          </GraphCard>
+        </div>
+
+        {/* Summary metrics */}
+        <div className={styles.grid} style={{ marginBottom: '2rem' }} data-testid="dashboard-summary">
+          <div className={styles.card} data-testid="summary-edl">
+            <h3>Projects by EDL</h3>
+            <ul>
+              {Object.entries(summary.edl).map(([edl, count]) => (
+                <li key={edl}>{edl}: <b>{count}</b></li>
+              ))}
+            </ul>
+          </div>
+          <div className={styles.card} data-testid="summary-manager">
+            <h3>Projects by Manager</h3>
+            <ul>
+              {Object.entries(summary.manager).map(([manager, count]) => (
+                <li key={manager}>{manager}: <b>{count}</b></li>
+              ))}
+            </ul>
           </div>
         </div>
 
+       
+
         {/* Table */}
         <div className={styles.card} style={{ marginBottom: 32 }} data-testid="dashboard-table">
-          <h3>Assessment Results Table</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+            <h3>Assessment Results Table</h3>
+            <div>
+              <button
+                style={{ marginRight: 8, padding: '6px 16px', borderRadius: 6, border: '1px solid #6366f1', background: '#fff', color: '#6366f1', fontWeight: 600, cursor: 'pointer' }}
+                onClick={() => {
+                  // Download CSV
+                  const csv = [
+                    ['Project', 'Account', 'Manager', 'EDL', 'Timestamp', 'Maturity Level'],
+                    ...sortedTableData.map(row => [row.project, row.account, row.manager, row.edl, row.timestamp, row.maturity])
+                  ].map(r => r.map(String).map(s => '"' + s.replace(/"/g, '""') + '"').join(',')).join('\n');
+                  const blob = new Blob([csv], { type: 'text/csv' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = 'dashboard-assessments.csv';
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                  URL.revokeObjectURL(url);
+                }}
+                data-testid="dashboard-download-btn"
+              >Download</button>
+              <button
+                style={{ padding: '6px 16px', borderRadius: 6, border: '1px solid #6366f1', background: '#fff', color: '#6366f1', fontWeight: 600, cursor: 'pointer' }}
+                onClick={() => {
+                  // Email (open mail client with CSV as body)
+                  const csv = [
+                    ['Project', 'Account', 'Manager', 'EDL', 'Timestamp', 'Maturity Level'],
+                    ...sortedTableData.map(row => [row.project, row.account, row.manager, row.edl, row.timestamp, row.maturity])
+                  ].map(r => r.map(String).map(s => '"' + s.replace(/"/g, '""') + '"').join(',')).join('%0D%0A');
+                  window.location.href = `mailto:?subject=Dashboard Assessment Data&body=${csv}`;
+                }}
+                data-testid="dashboard-email-btn"
+              >Email</button>
+            </div>
+          </div>
           <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #d1d5db' }}>
               <thead>
                 <tr>
-                  <th onClick={() => setSort(s => ({ key: 'project', dir: s.dir === 'asc' ? 'desc' : 'asc' }))} style={{ cursor: 'pointer' }}>Project</th>
-                  <th onClick={() => setSort(s => ({ key: 'account', dir: s.dir === 'asc' ? 'desc' : 'asc' }))} style={{ cursor: 'pointer' }}>Account</th>
-                  <th onClick={() => setSort(s => ({ key: 'manager', dir: s.dir === 'asc' ? 'desc' : 'asc' }))} style={{ cursor: 'pointer' }}>Manager</th>
-                  <th onClick={() => setSort(s => ({ key: 'edl', dir: s.dir === 'asc' ? 'desc' : 'asc' }))} style={{ cursor: 'pointer' }}>EDL</th>
-                  <th onClick={() => setSort(s => ({ key: 'timestamp', dir: s.dir === 'asc' ? 'desc' : 'asc' }))} style={{ cursor: 'pointer' }}>Timestamp</th>
-                  <th onClick={() => setSort(s => ({ key: 'maturity', dir: s.dir === 'asc' ? 'desc' : 'asc' }))} style={{ cursor: 'pointer' }}>Maturity Level</th>
+                  <th onClick={() => setSort(s => ({ key: 'project', dir: s.dir === 'asc' ? 'desc' : 'asc' }))} style={{ cursor: 'pointer', border: '1px solid #d1d5db', background: '#f3f4f6' }}>Project</th>
+                  <th onClick={() => setSort(s => ({ key: 'account', dir: s.dir === 'asc' ? 'desc' : 'asc' }))} style={{ cursor: 'pointer', border: '1px solid #d1d5db', background: '#f3f4f6' }}>Account</th>
+                  <th onClick={() => setSort(s => ({ key: 'manager', dir: s.dir === 'asc' ? 'desc' : 'asc' }))} style={{ cursor: 'pointer', border: '1px solid #d1d5db', background: '#f3f4f6' }}>Manager</th>
+                  <th onClick={() => setSort(s => ({ key: 'edl', dir: s.dir === 'asc' ? 'desc' : 'asc' }))} style={{ cursor: 'pointer', border: '1px solid #d1d5db', background: '#f3f4f6' }}>EDL</th>
+                  <th onClick={() => setSort(s => ({ key: 'timestamp', dir: s.dir === 'asc' ? 'desc' : 'asc' }))} style={{ cursor: 'pointer', border: '1px solid #d1d5db', background: '#f3f4f6' }}>Timestamp</th>
+                  <th onClick={() => setSort(s => ({ key: 'maturity', dir: s.dir === 'asc' ? 'desc' : 'asc' }))} style={{ cursor: 'pointer', border: '1px solid #d1d5db', background: '#f3f4f6' }}>Maturity Level</th>
                 </tr>
               </thead>
               <tbody>
                 {sortedTableData.length ? sortedTableData.map(row => (
                   <tr key={row.id} data-testid={`table-row-${row.id}`}>
-                    <td>{row.project}</td>
-                    <td>{row.account}</td>
-                    <td>{row.manager}</td>
-                    <td>{row.edl}</td>
-                    <td>{row.timestamp}</td>
-                    <td>{row.maturity}</td>
+                    <td style={{ border: '1px solid #d1d5db' }}>{row.project}</td>
+                    <td style={{ border: '1px solid #d1d5db' }}>{row.account}</td>
+                    <td style={{ border: '1px solid #d1d5db' }}>{row.manager}</td>
+                    <td style={{ border: '1px solid #d1d5db' }}>{row.edl}</td>
+                    <td style={{ border: '1px solid #d1d5db' }}>{row.timestamp}</td>
+                    <td style={{ border: '1px solid #d1d5db' }}>{row.maturity}</td>
                   </tr>
-                )) : <tr><td colSpan={6}>No results found.</td></tr>}
+                )) : <tr><td colSpan={6} style={{ border: '1px solid #d1d5db' }}>No results found.</td></tr>}
               </tbody>
             </table>
           </div>

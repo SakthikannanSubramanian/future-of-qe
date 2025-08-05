@@ -38,6 +38,18 @@ const Header = () => {
   // Desktop nav links
   const renderNavLinks = (isMobile = false) => (
     <ul className={styles.navList} data-testid="header-nav-list">
+      <li data-testid="header-nav-home">
+        <button
+          className={styles.navLink}
+          style={{ background: 'none' }}
+          onClick={() => { setDrawerOpen(false); navigate('/'); }}
+          data-testid="header-nav-link-home"
+        >
+          {isMobile && <span style={{ marginRight: 8 }}><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#6366f1" strokeWidth="2"><path d="M3 12L12 4l9 8"/><path d="M9 21V9h6v12"/></svg></span>}
+          Home
+        </button>
+      </li>
+      {/* Questionnaire button removed as requested */}
       <li data-testid="header-nav-about">
         <button className={styles.navLink} style={{ background: 'none' }} onClick={() => { setModal('about'); setDrawerOpen(false); }} data-testid="header-nav-link-about">
           {isMobile && <span style={{ marginRight: 8 }}>{infoIcon}</span>}About
@@ -121,9 +133,9 @@ const Header = () => {
           <button onClick={() => { setModal(null); navigate('/'); }} aria-label="Close" style={{ position: 'absolute', top: 12, right: 12, background: 'none', border: 'none', fontSize: 24, color: '#6366f1', cursor: 'pointer' }}>×</button>
           <div style={{ fontSize: 22, fontWeight: 600, marginBottom: 8 }}>Contact Information</div>
           <div style={{ margin: '12px 0', fontSize: 16 }}>
-            <b>Email:</b> <a href="mailto:sakthikannan.subramanian@cognizant.com" style={{ color: '#6366f1' }}>sakthikannan.subramanian@cognizant.com</a><br/>
-            <b>Signature:</b> Sakthikannan Subramanian<br/>
-            <span style={{ color: '#555', fontSize: 14, display: 'block', marginTop: 8 }}>Note: For any queries, please reach out to the above email address.</span>
+            <span style={{ color: '#555', fontSize: 15, display: 'block', marginTop: 8 }}>
+              For any queries, please contact your Cognizant representative or use the official support channels.
+            </span>
           </div>
         </div>
       </Modal>
