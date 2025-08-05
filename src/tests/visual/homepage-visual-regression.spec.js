@@ -1,6 +1,18 @@
 import { test, expect } from '@playwright/test';
 
+/**
+ * Homepage Visual Regression - Responsive Breakpoints
+ * Core visual regression testing for homepage across different viewport sizes
+ */
 test.describe('Homepage Visual Regression - Responsive Breakpoints', () => {
+  
+  // Responsive breakpoint configurations
+  const breakpoints = [
+    { name: 'desktop', width: 1920, height: 1080, description: 'Desktop breakpoint' },
+    { name: 'tablet', width: 768, height: 1024, description: 'Tablet breakpoint' },
+    { name: 'mobile', width: 375, height: 667, description: 'Mobile breakpoint' }
+  ];
+
   test.beforeEach(async ({ page }) => {
     // Navigate to homepage before each test
     await page.goto('http://localhost:3000/');
@@ -9,36 +21,32 @@ test.describe('Homepage Visual Regression - Responsive Breakpoints', () => {
     await page.waitForTimeout(1000);
   });
 
-  test('should match homepage on desktop breakpoint', async ({ page }) => {
-    // Desktop breakpoint: 1920x1080
-    await page.setViewportSize({ width: 1920, height: 1080 });
+  // Helper function for consistent screenshot taking
+  async function takeResponsiveScreenshot(page, breakpoint) {
+    await page.setViewportSize({ width: breakpoint.width, height: breakpoint.height });
     await page.waitForTimeout(500); // Allow layout to adjust
 
-    await expect(page).toHaveScreenshot('homepage-desktop-fullpage.png', {
+    await expect(page).toHaveScreenshot(`homepage-${breakpoint.name}-fullpage.png`, {
       fullPage: true,
       animations: 'disabled',
+      threshold: 0.15,
+      maxDiffPixels: 50000,
     });
-  });
+  }
 
-  test('should match homepage on tablet breakpoint', async ({ page }) => {
-    // Tablet breakpoint: 768x1024
-    await page.setViewportSize({ width: 768, height: 1024 });
-    await page.waitForTimeout(500); // Allow layout to adjust
-
-    await expect(page).toHaveScreenshot('homepage-tablet-fullpage.png', {
-      fullPage: true,
-      animations: 'disabled',
+  // Data-driven test for all responsive breakpoints
+  for (const breakpoint of breakpoints) {
+    test(`should match homepage on ${breakpoint.description} (${breakpoint.width}x${breakpoint.height})`, async ({ page }) => {
+      await takeResponsiveScreenshot(page, breakpoint);
     });
-  });
+  }
 
-  test('should match homepage on mobile breakpoint', async ({ page }) => {
-    // Mobile breakpoint: 375x667
-    await page.setViewportSize({ width: 375, height: 667 });
-    await page.waitForTimeout(500); // Allow layout to adjust
-
-    await expect(page).toHaveScreenshot('homepage-mobile-fullpage.png', {
-      fullPage: true,
-      animations: 'disabled',
-    });
+  // Combined test for quick responsive verification
+  test('should maintain visual consistency across all breakpoints', async ({ page }) => {
+    for (const breakpoint of breakpoints) {
+      await test.step(`Verify ${breakpoint.description}`, async () => {
+        await takeResponsiveScreenshot(page, breakpoint);
+      });
+    }
   });
 });

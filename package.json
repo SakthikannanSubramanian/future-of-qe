@@ -7,30 +7,33 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
-    "test:e2e": "playwright test test/e2e/ --headed",
-    "test:e2e:ui": "playwright test --ui",
-    "test:e2e:headed": "playwright test test/e2e/ --headed",
-    "test:e2e:debug": "playwright test test/e2e/ --debug",
-    "test:functional": "playwright test test/functional/ --headed",
-    "test:functional:ui": "playwright test test/functional/ --ui",
-    "test:visual": "playwright test --config=playwright-visual.config.js --headed",
-    "test:visual:ui": "playwright test --config=playwright-visual.config.js --ui",
-    "test:visual:update": "playwright test --config=playwright-visual.config.js --update-snapshots",
-    "test:visual:debug": "playwright test --config=playwright-visual.config.js --debug",
-    "test:visual:compare": "playwright test --config=playwright-visual.config.js --reporter=html",
-    "test:all": "npm run test:functional && npm run test:e2e",
-    "test:all-with-visual": "npm run test:functional && npm run test:e2e && npm run test:visual",
-    "test:complete": "npm run test:functional && npm run test:e2e && npm run test:visual",
-    "test:complete:headless": "playwright test test/functional/ && playwright test test/e2e/ && playwright test --config=playwright-visual.config.js",
-    "test:complete:report": "npm run test:complete:headless && npm run test:report && npx playwright show-report playwright-report-visual",
-    "test:quick": "npm run test:functional",
-    "test:integration": "npm run test:e2e",
-    "test:regression": "npm run test:visual",
+    
+    "test:e2e": "playwright test --project=e2e --headed",
+    "test:e2e:ui": "playwright test --project=e2e --ui",
+    "test:e2e:debug": "playwright test --project=e2e --debug",
+    
+    "test:functional": "playwright test --project=functional --headed",
+    "test:functional:ui": "playwright test --project=functional --ui",
+    
+    "test:performance": "playwright test --project=performance --headed",
+    "test:performance:ui": "playwright test --project=performance --ui",
+    
+    "test:visual": "playwright test --project=visual --headed",
+    "test:visual:ui": "playwright test --project=visual --ui",
+    "test:visual:update": "playwright test --project=visual --update-snapshots",
+    "test:visual:debug": "playwright test --project=visual --debug",
+    
+    "test:all": "playwright test --project=functional --project=e2e --project=performance",
+    "test:all:headless": "playwright test --project=functional --project=e2e --project=performance",
+    "test:complete": "playwright test --project=functional --project=e2e --project=performance --project=visual",
+    "test:complete:headless": "playwright test --project=functional --project=e2e --project=performance --project=visual",
+    
     "test:report": "playwright show-report",
-    "test:allure": "allure generate allure-results --clean && allure open",
+    
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write ."
