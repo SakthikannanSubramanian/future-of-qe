@@ -278,7 +278,12 @@ export const loadQuestionnaire = createAsyncThunk(
   'questionnaire/loadQuestionnaire',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:8082/api/v1/questions');
+      const response = await fetch('https://vibebackendservice.onrender.com/api/v1/questions', {
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       if (!response.ok) {
         throw new Error('Backend returned error');
       }
@@ -289,6 +294,8 @@ export const loadQuestionnaire = createAsyncThunk(
       }
       return data;
     } catch (err) {
+      // Log the error for debugging but don't fail the app
+      console.warn('Failed to fetch from backend, using static data:', err.message);
       // Fallback to static data
       return initialQuestionnaireData;
     }
@@ -310,7 +317,7 @@ export const submitQuestionnaireResponses = createAsyncThunk(
 )
 
 const initialState = {
-  questionnaireData: [],
+  questionnaireData: initialQuestionnaireData, // Start with static data to prevent undefined errors
   formattedResponses: [], // Array of formatted responses as required
   currentCategoryIndex: 0,
   loading: false,

@@ -4,13 +4,35 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 export const saveProjectDetails = createAsyncThunk(
   'project/saveProjectDetails',
   async (projectData) => {
-    // Simulate API call - in real app, this would call your backend
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    // For now, we'll just save to localStorage to persist data
-    localStorage.setItem('projectDetails', JSON.stringify(projectData))
-    
-    return projectData
+    const url = 'https://projectmanagement-e2e5.onrender.com/api/v1/project-details';
+    const postBody = JSON.stringify(projectData);
+    let success = false;
+    let response;
+    // Try POST once, retry once if fails
+    for (let attempt = 0; attempt < 2 && !success; attempt++) {
+      try {
+        response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: postBody,
+        });
+        if (response.ok) {
+          success = true;
+          break;
+        } else {
+          throw new Error('Backend returned error');
+        }
+      } catch (err) {
+        if (attempt === 1) {
+          console.warn('Failed to save project details to backend after retry:', err.message);
+        }
+      }
+    }
+    if (!success) {
+      // Fallback: save to localStorage for persistence
+      localStorage.setItem('projectDetails', postBody);
+    }
+    return projectData;
   }
 )
 

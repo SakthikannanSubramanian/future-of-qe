@@ -45,10 +45,8 @@ const Questions = () => {
 
   // Load questionnaire data on component mount
   useEffect(() => {
-    if (questionnaireData.length === 0) {
-      dispatch(loadQuestionnaire())
-    }
-  }, [dispatch, questionnaireData.length])
+    dispatch(loadQuestionnaire())
+  }, [dispatch])
 
   // Load existing answers for current category when category changes
   useEffect(() => {

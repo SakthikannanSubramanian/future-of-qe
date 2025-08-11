@@ -5,19 +5,32 @@ export const loadTechStackData = createAsyncThunk(
   'techstack/loadTechStackData',
   async () => {
     try {
-      // Import the JSON data
-      const response = await import('../../data/techstack-sample.json')
-      const data = response.default
+      // Try fetching from backend API
+      const response = await fetch('http://localhost:8083/api/v1/tech-stack');
+      if (!response.ok) throw new Error('Backend returned error');
+      const data = await response.json();
       // Transform data to ensure categories property for consistency
       const transformedData = data.map(stack => ({
         ...stack,
-        categories: stack.children || [], // Map children to categories for consistency
-        children: stack.children || [] // Keep children for backward compatibility
-      }))
-      return transformedData
+        categories: stack.children || [],
+        children: stack.children || []
+      }));
+      return transformedData;
     } catch (error) {
-      console.error('Failed to load tech stack data:', error)
-      throw error
+      // Fallback to local JSON import
+      try {
+        const localResponse = await import('../../data/techstack-sample.json');
+        const localData = localResponse.default;
+        const transformedData = localData.map(stack => ({
+          ...stack,
+          categories: stack.children || [],
+          children: stack.children || []
+        }));
+        return transformedData;
+      } catch (localError) {
+        console.error('Failed to load tech stack data from both backend and local:', localError);
+        throw localError;
+      }
     }
   }
 )
