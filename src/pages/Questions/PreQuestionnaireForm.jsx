@@ -67,12 +67,12 @@ export default function PreQuestionnaireForm() {
     }
     // Simulate backend by storing in Redux
     await dispatch(saveProjectDetails({
-      'projectName': form.projectName,
-      'accountName': form.accountName,
-      'emailId': form.email,
-      'manager': form.manager,
-      'pdl': form.pdl,
-      'edl': form.edl,
+      projectName: form.projectName,
+      accountName: form.accountName,
+      emailId: form.email,
+      manager: form.manager,
+      pdl: form.pdl,
+      edl: form.edl,
     }));
     navigate('/questions');
   };

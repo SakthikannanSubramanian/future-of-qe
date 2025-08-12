@@ -1,277 +1,200 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
-// Initial questionnaire data
+// Initial questionnaire data (new schema)
 const initialQuestionnaireData = [
-   {
-     "Parameter": "Automation coverage",
-     "ParameterWeightage": 11,
-     "Recommendations": [
+  {
+    "categoryId": "550e8400-e29b-41d4-a716-446655440001",
+    "parameter": "Automation coverage",
+    "description": "Questions related to test automation coverage across different testing types",
+    "displayOrder": 1,
+    "parameterWeightage": 11,
+    "questions": [
       {
-        "level": 1,
-        "recommendation": "Start by automating high-priority test cases such as regression tests. Begin with smaller, repetitive tasks that are critical to project delivery."
+        "questionId": "3fc771d9-e3d8-4afd-adc1-59e7f846b17a",
+        "description": "What percentage of Regression test cases have been automated?",
+        "weight": 3.0,
+        "displayOrder": 1,
+        "options": {
+          "a": { "range": "80-100%", "level": 4 },
+          "b": { "range": "50-80%", "level": 3 },
+          "c": { "range": "25-50%", "level": 2 },
+          "d": { "range": "0-25%", "level": 1 }
+        },
+        "question": "What percentage of Regression test cases have been automated?",
+        "qweightage": 3
       },
       {
-        "level": 2,
-        "recommendation": "Expand your automation coverage by including more functional and non-functional tests. Look into increasing test coverage for edge cases and add automation for key workflows."
+        "questionId": "80f24f27-d49f-481b-8f16-30bf768e0828",
+        "description": "What percentage of End-to-End test cases have been automated?",
+        "weight": 2.0,
+        "displayOrder": 2,
+        "options": {
+          "a": { "range": "80-100%", "level": 4 },
+          "b": { "range": "50-80%", "level": 3 },
+          "c": { "range": "25-50%", "level": 2 },
+          "d": { "range": "0-25%", "level": 1 }
+        },
+        "question": "What percentage of End-to-End test cases have been automated?",
+        "qweightage": 2
       },
       {
-        "level": 3,
-        "recommendation": "Increase the depth of your automation by covering all critical features and business logic. Ensure your tests are comprehensive and can be executed across various platforms."
+        "questionId": "efa5949b-aaa3-40bc-93c0-59e6f8c50122",
+        "description": "What percentage of device automation test cases have been automated?",
+        "weight": 1.0,
+        "displayOrder": 3,
+        "options": {
+          "a": { "range": "80-100%", "level": 4 },
+          "b": { "range": "50-80%", "level": 3 },
+          "c": { "range": "25-50%", "level": 2 },
+          "d": { "range": "0-25%", "level": 1 }
+        },
+        "question": "What percentage of device automation test cases have been automated?",
+        "qweightage": 1
       },
       {
-        "level": 4,
-        "recommendation": "Achieve full automation coverage across all testing types, including performance and security testing. Continue optimizing your framework for increased execution speed and scalability."
+        "questionId": "336baf63-d6c2-4ede-8327-d84b56eb46db",
+        "description": "Select the level of functional test cases automated?",
+        "weight": 4.0,
+        "displayOrder": 4,
+        "options": {
+          "a": { "range": "Very few or No test cases are automated", "level": 1 },
+          "b": { "range": "Only Critical", "level": 2 },
+          "c": { "range": "Critical and Major", "level": 3 },
+          "d": { "range": "All functional test cases are automated", "level": 4 }
+        },
+        "question": "Select the level of functional test cases automated?",
+        "qweightage": 4
       }
     ],
-     "Questions": [
-       {
-         "Question": "What percentage of Regression test cases have been automated?",
-         "qWeightage": 3,
-         "Options": {
-           "a": {
-             "Range": "80-100%",
-             "Level": 4
-           },
-           "b": {
-             "Range": "50-80%",
-             "Level": 3
-           },
-           "c": {
-             "Range": "25-50%",
-             "Level": 2
-           },
-           "d": {
-             "Range": "0-25%",
-             "Level": 1
-           }
-         }
-       },
-       {
-         "Question": "What percentage of End-to-End test cases have been automated?",
-         "qWeightage": 2,
-         "Options": {
-           "a": {
-             "Range": "80-100%",
-             "Level": 4
-           },
-           "b": {
-             "Range": "50-80%",
-             "Level": 3
-           },
-           "c": {
-             "Range": "25-50%",
-             "Level": 2
-           },
-           "d": {
-             "Range": "0-25%",
-             "Level": 1
-           }
-         }
-       },
-       {
-         "Question": "What percentage of device automation test cases have been automated?",
-         "qWeightage": 1,
-         "Options": {
-           "a": {
-             "Range": "80-100%",
-             "Level": 4
-           },
-           "b": {
-             "Range": "50-80%",
-             "Level": 3
-           },
-           "c": {
-             "Range": "25-50%",
-             "Level": 2
-           },
-           "d": {
-             "Range": "0-25%",
-             "Level": 1
-           }
-         }
-       },
-       {
-         "Question": "Select the level of functional test cases automated?",
-         "qWeightage": 4,
-         "Options": {
-           "a": {
-             "Description": "Very few or No test cases are automated",
-             "Level": 1
-           },
-           "b": {
-             "Description": "Only Critical",
-             "Level": 2
-           },
-           "c": {
-             "Description": "Critical and Major",
-             "Level": 3
-           },
-           "d": {
-             "Description": "All functional test cases are automated",
-             "Level": 4
-           }
-         }
-       }
-     ]
-   },
-   {
-     "Parameter": "Automated NFT",
-     "ParameterWeightage": 9,
-     "Recommendations": [
+    "recommendations": [
       {
+        "recommendationId": null,
         "level": 1,
-        "recommendation": "Begin automating performance, security, and accessibility testing for critical functionalities. Focus on automating the basic non-functional tests that are most relevant to your project."
+        "recommendationText": "Start by automating high-priority test cases such as regression tests. Begin with smaller, repetitive tasks that are critical to project delivery."
       },
       {
+        "recommendationId": null,
         "level": 2,
-        "recommendation": "Increase the scope of your non-functional tests by adding more complex tests like load and stress testing. Start integrating tools such as JMeter for performance and OWASP for security testing."
+        "recommendationText": "Expand your automation coverage by including more functional and non-functional tests. Look into increasing test coverage for edge cases and add automation for key workflows."
       },
       {
+        "recommendationId": null,
         "level": 3,
-        "recommendation": "Automate a wider range of non-functional tests, such as compatibility across multiple browsers and devices. Ensure that all critical non-functional aspects are fully covered."
+        "recommendationText": "Increase the depth of your automation by covering all critical features and business logic. Ensure your tests are comprehensive and can be executed across various platforms."
       },
       {
+        "recommendationId": null,
         "level": 4,
-        "recommendation": "At this level, ensure that non-functional tests are integrated into your continuous integration pipeline. Regularly run automated performance and security tests, and use predictive analytics for proactive improvements."
+        "recommendationText": "Achieve full automation coverage across all testing types, including performance and security testing. Continue optimizing your framework for increased execution speed and scalability."
+      }
+    ]
+  },
+  {
+    "categoryId": "550e8400-e29b-41d4-a716-446655440002",
+    "parameter": "Automated NFT",
+    "description": "Questions related to automated non-functional testing capabilities",
+    "displayOrder": 2,
+    "parameterWeightage": 9,
+    "questions": [
+      {
+        "questionId": "eaaf8954-df8a-4f9a-b901-be5d1b77288a",
+        "description": "How much percentage of your Performance Testing automated?",
+        "weight": 6.0,
+        "displayOrder": 1,
+        "options": {
+          "a": { "range": "80-100%", "level": 4 },
+          "b": { "range": "50-80%", "level": 3 },
+          "c": { "range": "25-50%", "level": 2 },
+          "d": { "range": "0-25%", "level": 1 }
+        },
+        "question": "How much percentage of your Performance Testing automated?",
+        "qweightage": 6
+      },
+      {
+        "questionId": "1e55eaa9-16a9-4905-b858-852b6d8651b2",
+        "description": "How much percentage of your Accessibility Testing automated?",
+        "weight": 2.0,
+        "displayOrder": 2,
+        "options": {
+          "a": { "range": "80-100%", "level": 4 },
+          "b": { "range": "50-80%", "level": 3 },
+          "c": { "range": "25-50%", "level": 2 },
+          "d": { "range": "0-25%", "level": 1 }
+        },
+        "question": "How much percentage of your Accessibility Testing automated?",
+        "qweightage": 2
+      },
+      {
+        "questionId": "5779c6f2-6dba-468d-9478-9eff37da6c7c",
+        "description": "How much percentage of your Security Testing automated?",
+        "weight": 5.0,
+        "displayOrder": 3,
+        "options": {
+          "a": { "range": "80-100%", "level": 4 },
+          "b": { "range": "50-80%", "level": 3 },
+          "c": { "range": "25-50%", "level": 2 },
+          "d": { "range": "0-25%", "level": 1 }
+        },
+        "question": "How much percentage of your Security Testing automated?",
+        "qweightage": 5
+      },
+      {
+        "questionId": "f4eab109-d414-48cd-a315-f1ac7c0efdf8",
+        "description": "How much percentage of your Compatibility Testing (Browsers) automated?",
+        "weight": 4.0,
+        "displayOrder": 4,
+        "options": {
+          "a": { "range": "80-100%", "level": 4 },
+          "b": { "range": "50-80%", "level": 3 },
+          "c": { "range": "25-50%", "level": 2 },
+          "d": { "range": "0-25%", "level": 1 }
+        },
+        "question": "How much percentage of your Compatibility Testing (Browsers) automated?",
+        "qweightage": 4
+      },
+      {
+        "questionId": "a5c54b8f-e38e-49b7-b18f-5a88834188a4",
+        "description": "How much percentage of your Compatibility Testing (Devices) automated?",
+        "weight": 3.0,
+        "displayOrder": 5,
+        "options": {
+          "a": { "range": "80-100%", "level": 4 },
+          "b": { "range": "50-80%", "level": 3 },
+          "c": { "range": "25-50%", "level": 2 },
+          "d": { "range": "0-25%", "level": 1 }
+        },
+        "question": "How much percentage of your Compatibility Testing (Devices) automated?",
+        "qweightage": 3
+      },
+      {
+        "questionId": "b3a8cfa1-3c49-4120-9f51-a4d4fcfa8134",
+        "description": "How much percentage of your Usability Testing automated?",
+        "weight": 1.0,
+        "displayOrder": 6,
+        "options": {
+          "a": { "range": "80-100%", "level": 4 },
+          "b": { "range": "50-80%", "level": 3 },
+          "c": { "range": "25-50%", "level": 2 },
+          "d": { "range": "0-25%", "level": 1 }
+        },
+        "question": "How much percentage of your Usability Testing automated?",
+        "qweightage": 1
       }
     ],
-     "Questions": [
-       {
-         "Question": "How much percentage of your Performance Testing automated?",
-         "qWeightage": 6,
-         "Options": {
-           "a": {
-             "Range": "80-100%",
-             "Level": 4
-           },
-           "b": {
-             "Range": "50-80%",
-             "Level": 3
-           },
-           "c": {
-             "Range": "25-50%",
-             "Level": 2
-           },
-           "d": {
-             "Range": "0-25%",
-             "Level": 1
-           }
-         }
-       },
-       {
-         "Question": "How much percentage of your Accessibility Testing automated?",
-         "qWeightage": 2,
-         "Options": {
-           "a": {
-             "Range": "80-100%",
-             "Level": 4
-           },
-           "b": {
-             "Range": "50-80%",
-             "Level": 3
-           },
-           "c": {
-             "Range": "25-50%",
-             "Level": 2
-           },
-           "d": {
-             "Range": "0-25%",
-             "Level": 1
-           }
-         }
-       },
-       {
-         "Question": "How much percentage of your Security Testing automated?",
-         "qWeightage": 5,
-         "Options": {
-           "a": {
-             "Range": "80-100%",
-             "Level": 4
-           },
-           "b": {
-             "Range": "50-80%",
-             "Level": 3
-           },
-           "c": {
-             "Range": "25-50%",
-             "Level": 2
-           },
-           "d": {
-             "Range": "0-25%",
-             "Level": 1
-           }
-         }
-       },
-       {
-         "Question": "How much percentage of your Compatibility Testing (Browsers) automated?",
-         "qWeightage": 4,
-         "Options": {
-           "a": {
-             "Range": "80-100%",
-             "Level": 4
-           },
-           "b": {
-             "Range": "50-80%",
-             "Level": 3
-           },
-           "c": {
-             "Range": "25-50%",
-             "Level": 2
-           },
-           "d": {
-             "Range": "0-25%",
-             "Level": 1
-           }
-         }
-       },
-       {
-         "Question": "How much percentage of your Compatibility Testing (Devices) automated?",
-         "qWeightage": 3,
-         "Options": {
-           "a": {
-             "Range": "80-100%",
-             "Level": 4
-           },
-           "b": {
-             "Range": "50-80%",
-             "Level": 3
-           },
-           "c": {
-             "Range": "25-50%",
-             "Level": 2
-           },
-           "d": {
-             "Range": "0-25%",
-             "Level": 1
-           }
-         }
-       },
-       {
-         "Question": "How much percentage of your Usability Testing automated?",
-         "qWeightage": 1,
-         "Options": {
-           "a": {
-             "Range": "80-100%",
-             "Level": 4
-           },
-           "b": {
-             "Range": "50-80%",
-             "Level": 3
-           },
-           "c": {
-             "Range": "25-50%",
-             "Level": 2
-           },
-           "d": {
-             "Range": "0-25%",
-             "Level": 1
-           }
-         }
-       }
-     ]
-   },
-   
- ];
+    "recommendations": [
+      {
+        "recommendationId": null,
+        "level": 1,
+        "recommendationText": "Begin automating performance, security, and accessibility testing for critical functionalities. Focus on automating the basic non-functional tests that are most relevant to your project."
+      },
+      {
+        "recommendationId": null,
+        "level": 2,
+        "recommendationText": "Increase the scope of your non-functional tests by adding more complex tests like load and stress testing. Start integrating tools such as JMeter for performance and OWASP for security testing."
+      }
+    ]
+  }
+];
 
 // Async thunk for loading questionnaire data
 export const loadQuestionnaire = createAsyncThunk(

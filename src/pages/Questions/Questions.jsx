@@ -54,7 +54,7 @@ const Questions = () => {
       const currentCategory = questionnaireData[currentCategoryIndex]
       const existingAnswers = {}
       
-      currentCategory.Questions.forEach((question, questionIndex) => {
+      currentCategory.questions.forEach((question, questionIndex) => {
         const responseKey = `${currentCategoryIndex}-${questionIndex}`
         if (allResponses[responseKey]) {
           existingAnswers[questionIndex] = allResponses[responseKey].selectedOption
@@ -88,7 +88,7 @@ const Questions = () => {
 
   // Helper functions
   const getTotalQuestions = () => {
-    return questionnaireData.reduce((total, category) => total + category.Questions.length, 0)
+    return questionnaireData.reduce((total, category) => total + category.questions.length, 0)
   }
 
   const getAnsweredQuestions = () => {
@@ -110,26 +110,26 @@ const Questions = () => {
   const areAllCategoryQuestionsAnswered = () => {
     if (!questionnaireData.length || currentCategoryIndex >= questionnaireData.length) return false
     const currentCategory = getCurrentCategory()
-    return currentCategory.Questions.every((_, index) => categoryAnswers[index])
+    return currentCategory.questions.every((_, index) => categoryAnswers[index])
   }
 
   // Get all unanswered question indexes in current category
   const getUnansweredIndexes = () => {
     if (!questionnaireData.length || currentCategoryIndex >= questionnaireData.length) return []
     const currentCategory = getCurrentCategory()
-    return currentCategory.Questions.map((_, idx) => idx).filter(idx => !categoryAnswers[idx])
+    return currentCategory.questions.map((_, idx) => idx).filter(idx => !categoryAnswers[idx])
   }
 
   const getFirstUnansweredIndex = () => {
     if (!questionnaireData.length || currentCategoryIndex >= questionnaireData.length) return null
     const currentCategory = getCurrentCategory()
-    return currentCategory.Questions.findIndex((_, index) => !categoryAnswers[index])
+    return currentCategory.questions.findIndex((_, index) => !categoryAnswers[index])
   }
 
   // Event handlers
   const handleAnswerSelect = (questionIndex, optionKey) => {
     const currentCategory = getCurrentCategory()
-    const question = currentCategory.Questions[questionIndex]
+    const question = currentCategory.questions[questionIndex]
     const responseKey = `${currentCategoryIndex}-${questionIndex}`
     
     // Update local state for current category
@@ -150,11 +150,11 @@ const Questions = () => {
       [responseKey]: {
         categoryIndex: currentCategoryIndex,
         questionIndex,
-        parameter: currentCategory.Parameter,
-        question: question.Question,
-        qWeightage: question.qWeightage,
+        parameter: currentCategory.parameter,
+        question: question.question,
+        qWeightage: question.qweightage,
         selectedOption: optionKey,
-        optionData: question.Options[optionKey]
+        optionData: question.options[optionKey]
       }
     }))
   }
@@ -179,16 +179,16 @@ const Questions = () => {
     const updatedAllResponses = { ...allResponses }
     
     Object.entries(categoryAnswers).forEach(([questionIndex, selectedOption]) => {
-      const question = currentCategory.Questions[parseInt(questionIndex)]
+      const question = currentCategory.questions[parseInt(questionIndex)]
       const responseKey = `${currentCategoryIndex}-${questionIndex}`
       updatedAllResponses[responseKey] = {
         categoryIndex: currentCategoryIndex,
         questionIndex: parseInt(questionIndex),
-        parameter: currentCategory.Parameter,
-        question: question.Question,
-        qWeightage: question.qWeightage,
+        parameter: currentCategory.parameter,
+        question: question.question,
+        qWeightage: question.qweightage,
         selectedOption,
-        optionData: question.Options[selectedOption]
+        optionData: question.options[selectedOption]
       }
     })
 
@@ -197,38 +197,36 @@ const Questions = () => {
     if (isLastCategory) {
       // Build the required format for Redux store including all category answers
       const formattedResponses = questionnaireData.map((category, catIdx) => {
-        const responses = category.Questions.map((question, qIdx) => {
+        const responses = category.questions.map((question, qIdx) => {
           const key = `${catIdx}-${qIdx}`
           let response = updatedAllResponses[key]
-          
           // If this is the current category, get answers from categoryAnswers state
           if (catIdx === currentCategoryIndex && categoryAnswers[qIdx]) {
             const selectedOption = categoryAnswers[qIdx]
-            const optionData = question.Options[selectedOption]
+            const optionData = question.options[selectedOption]
             response = {
               categoryIndex: catIdx,
               questionIndex: qIdx,
-              parameter: category.Parameter,
-              question: question.Question,
-              qWeightage: question.qWeightage,
+              parameter: category.parameter,
+              question: question.question,
+              qWeightage: question.qweightage,
               selectedOption,
               optionData
             }
           }
-          
           if (response) {
             return {
-              question: question.Question,
-              qWeightage: question.qWeightage,
+              question: question.question,
+              qWeightage: question.qweightage,
               selectedOption: response.selectedOption,
-              level: response.optionData.Level
+              level: response.optionData.level
             }
           }
           return null
         }).filter(Boolean)
         return {
-          Parameter: category.Parameter,
-          ParameterWeightage: category.ParameterWeightage,
+          parameter: category.parameter,
+          parameterWeightage: category.parameterWeightage,
           responses
         }
       })
@@ -254,22 +252,21 @@ const Questions = () => {
   const handlePrevious = () => {
     if (currentCategoryIndex > 0) {
       // Save current category answers to allResponses before navigating
-      const currentCategory = getCurrentCategory()
-      const updatedAllResponses = { ...allResponses }
-      
-      Object.entries(categoryAnswers).forEach(([questionIndex, selectedOption]) => {
-        const question = currentCategory.Questions[parseInt(questionIndex)]
-        const responseKey = `${currentCategoryIndex}-${questionIndex}`
-        updatedAllResponses[responseKey] = {
-          categoryIndex: currentCategoryIndex,
-          questionIndex: parseInt(questionIndex),
-          parameter: currentCategory.Parameter,
-          question: question.Question,
-          qWeightage: question.qWeightage,
-          selectedOption,
-          optionData: question.Options[selectedOption]
-        }
-      })
+    const currentCategory = getCurrentCategory()
+    const updatedAllResponses = { ...allResponses }
+    Object.entries(categoryAnswers).forEach(([questionIndex, selectedOption]) => {
+      const question = currentCategory.questions[parseInt(questionIndex)]
+      const responseKey = `${currentCategoryIndex}-${questionIndex}`
+      updatedAllResponses[responseKey] = {
+        categoryIndex: currentCategoryIndex,
+        questionIndex: parseInt(questionIndex),
+        parameter: currentCategory.parameter,
+        question: question.question,
+        qWeightage: question.qweightage,
+        selectedOption,
+        optionData: question.options[selectedOption]
+      }
+    })
       
       // Update allResponses state with current category answers before navigating
       setAllResponses(updatedAllResponses)
@@ -344,16 +341,16 @@ const Questions = () => {
     
     // Add current category answers to updatedAllResponses
     Object.entries(categoryAnswers).forEach(([questionIndex, selectedOption]) => {
-      const question = currentCategory.Questions[parseInt(questionIndex)];
+      const question = currentCategory.questions[parseInt(questionIndex)];
       const responseKey = `${currentCategoryIndex}-${questionIndex}`;
       updatedAllResponses[responseKey] = {
         categoryIndex: currentCategoryIndex,
         questionIndex: parseInt(questionIndex),
-        parameter: currentCategory.Parameter,
-        question: question.Question,
+        parameter: currentCategory.parameter,
+        question: question.question,
         qWeightage: question.qWeightage,
         selectedOption,
-        optionData: question.Options[selectedOption]
+        optionData: question.options[selectedOption]
       };
     });
 
@@ -378,23 +375,20 @@ const Questions = () => {
     try {
       // Format responses for submission - group by parameter
       const formattedResponses = questionnaireData.map((category, catIdx) => {
-        const responses = category.Questions.map((question, qIdx) => {
+        const responses = category.questions.map((question, qIdx) => {
           const key = `${catIdx}-${qIdx}`;
           const response = updatedAllResponses[key];
-          
           if (!response) return null;
-          
           return {
-            question: question.Question,
-            qWeightage: question.qWeightage,
+            question: question.question,
+            qWeightage: question.qweightage,
             selectedOption: response.selectedOption,
-            level: response.optionData.Level
+            level: response.optionData.level
           };
         }).filter(Boolean);
-
         return {
-          Parameter: category.Parameter,
-          ParameterWeightage: category.ParameterWeightage,
+          parameter: category.parameter,
+          parameterWeightage: category.parameterWeightage,
           responses
         };
       });
@@ -434,14 +428,14 @@ const Questions = () => {
           <div className={styles.categorySection}>
             <div className={styles.categoryHeader} ref={categoryHeaderRef}>
               <h2 className={styles.categoryTitle}>
-                {currentCategory.Parameter}
+                {currentCategory.parameter}
               </h2>
               <p className={styles.categoryDescription}>
                 Please answer all questions in this parameter before proceeding to the next.
               </p>
             </div>
             <div className={styles.questionsGrid}>
-              {currentCategory.Questions.map((question, questionIndex) => (
+              {currentCategory.questions.map((question, questionIndex) => (
                 <div
                   key={questionIndex}
                   className={
@@ -458,10 +452,10 @@ const Questions = () => {
                     </h3>
                   </div>
                   <div className={styles.questionContent}>
-                    <p className={styles.questionText}>{question.Question}</p>
+                    <p className={styles.questionText}>{question.question}</p>
                   </div>
                   <div className={styles.optionsContainer}>
-                    {Object.entries(question.Options).map(([optionKey, optionValue]) => {
+                    {Object.entries(question.options).map(([optionKey, optionValue]) => {
                       const isSelected = categoryAnswers[questionIndex] === optionKey
                       return (
                         <label
@@ -478,7 +472,7 @@ const Questions = () => {
                           />
                           <div className={styles.optionContent}>
                             <span className={styles.optionText}>
-                              {optionValue.Range || optionValue.Description}
+                              {optionValue.range || optionValue.description}
                             </span>
                           </div>
                         </label>
